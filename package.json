@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "bun run --watch src/index.tsx",
     "build": "bun build --compile --minify --sourcemap ./src/index.tsx --outfile tui",
+    "generate:companions": "python scripts/generate-companions.py --keep-helped-by",
     "lint": "biome check --write --unsafe"
   },
   "devDependencies": {
@@ -13,7 +14,7 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "@opentui/core": "^0.1.77",
