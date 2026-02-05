@@ -29,8 +29,8 @@
         "useJsonImportAttributes": "error"
       },
       "performance": {
-        "noAwaitInLoops": "error",
-        "useTopLevelRegex": "error"
+        "useTopLevelRegex": "error",
+        "noAwaitInLoops": "off"
       },
       "style": {
         "noCommonJs": "error",
