@@ -7,14 +7,15 @@
     "dev": "bun run --watch src/index.tsx",
     "build": "bun build --compile --minify --sourcemap ./src/index.tsx --outfile tui",
     "generate:companions": "python scripts/generate-companions.py --keep-helped-by",
-    "lint": "biome check --write --unsafe"
+    "lint": "biome check --write --unsafe",
+    "test": "bun test"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.14",
-    "@types/bun": "latest"
+    "@types/bun": "^1.3.8"
   },
   "peerDependencies": {
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@opentui/core": "^0.1.77",

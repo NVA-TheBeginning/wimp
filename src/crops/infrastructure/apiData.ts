@@ -6,7 +6,7 @@ import {
   CropListResponseSchema,
   type GrowstuffCrop,
   type RawCrop,
-} from "../domain/schemas/infrastructure";
+} from "@/crops/infrastructure/schemas/infrastructure";
 
 const BASE_URL = "https://www.growstuff.org";
 const PAGE_LIMIT = 100;

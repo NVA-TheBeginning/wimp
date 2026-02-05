@@ -20,6 +20,15 @@
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true
+    "noImplicitOverride": true,
+
+    // Path aliases
+    "baseUrl": ".",
+    "paths": {
+      "@crops/*": ["src/crops/*"],
+      "@garden/*": ["src/garden/*"],
+      "@ui/*": ["src/ui/*"],
+      "@/*": ["src/*"]
+    }
   }
 }
