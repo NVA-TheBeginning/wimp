@@ -1,4 +1,8 @@
-import { ForbiddenCompanionError, IncompatibleCropError, SelfAssociationError } from "@/crops/domain/exceptions/errors";
+import {
+  CannotAssociateCropToItself,
+  ForbiddenCompanionAssociation,
+  IncompatibleGrowingRequirements,
+} from "@/crops/domain/exceptions/errors";
 import type { CompanionRegistry } from "@/crops/domain/services/companionRegistry";
 import type { CropName } from "@/crops/domain/value-objects/cropName";
 import type { GrowingRequirements } from "@/crops/domain/value-objects/growingRequirements";
@@ -35,12 +39,12 @@ export class Crop {
 
   associateCompanion(companion: Crop): void {
     if (this.name.equals(companion.name)) {
-      throw new SelfAssociationError(this.name);
+      throw new CannotAssociateCropToItself(this.name);
     }
 
     // Growing requirements compatibility (sun + season)
     if (!this.requirements.isCompatibleWith(companion.requirements)) {
-      throw new IncompatibleCropError(
+      throw new IncompatibleGrowingRequirements(
         this.name,
         companion.name,
         "incompatible growing requirements (sun or season mismatch)",
@@ -48,7 +52,7 @@ export class Crop {
     }
 
     if (this.companionRegistry.isForbidden(this.name, companion.name)) {
-      throw new ForbiddenCompanionError(this.name, companion.name);
+      throw new ForbiddenCompanionAssociation(this.name, companion.name);
     }
 
     this.companions.add(companion.name);

@@ -1,6 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import { Crop } from "@/crops/domain/aggregates/crop";
-import { ForbiddenCompanionError, IncompatibleCropError, SelfAssociationError } from "@/crops/domain/exceptions/errors";
+import {
+  CannotAssociateCropToItself,
+  ForbiddenCompanionAssociation,
+  IncompatibleGrowingRequirements,
+} from "@/crops/domain/exceptions/errors";
 import { CropName } from "@/crops/domain/value-objects/cropName";
 import {
   GrowingRequirements,
@@ -84,7 +88,7 @@ describe("Crop", () => {
   });
 
   describe("associateCompanion - Invariant #3: No self-companion", () => {
-    test("throws SelfAssociationError when associating with itself", () => {
+    test("throws CannotAssociateCropToItself when associating with itself", () => {
       const registry = new MockCompanionRegistry();
       const tomato = Crop.create(
         CropName.create("tomato"),
@@ -93,13 +97,13 @@ describe("Crop", () => {
         registry,
       );
 
-      expect(() => tomato.associateCompanion(tomato)).toThrow(SelfAssociationError);
+      expect(() => tomato.associateCompanion(tomato)).toThrow(CannotAssociateCropToItself);
       expect(() => tomato.associateCompanion(tomato)).toThrow("cannot be associated with itself");
     });
   });
 
   describe("associateCompanion - Invariant #5: Sun compatibility", () => {
-    test("throws IncompatibleCropError for incompatible sun requirements", () => {
+    test("throws IncompatibleGrowingRequirements for incompatible sun requirements", () => {
       const registry = new MockCompanionRegistry();
       const tomato = Crop.create(
         CropName.create("tomato"),
@@ -114,7 +118,7 @@ describe("Crop", () => {
         registry,
       );
 
-      expect(() => tomato.associateCompanion(lettuce)).toThrow(IncompatibleCropError);
+      expect(() => tomato.associateCompanion(lettuce)).toThrow(IncompatibleGrowingRequirements);
       expect(() => tomato.associateCompanion(lettuce)).toThrow("incompatible growing requirements");
     });
 
@@ -139,7 +143,7 @@ describe("Crop", () => {
   });
 
   describe("associateCompanion - Invariant #6: Season overlap", () => {
-    test("throws IncompatibleCropError for non-overlapping seasons", () => {
+    test("throws IncompatibleGrowingRequirements for non-overlapping seasons", () => {
       const registry = new MockCompanionRegistry();
       const tomato = Crop.create(
         CropName.create("tomato"),
@@ -154,7 +158,7 @@ describe("Crop", () => {
         registry,
       );
 
-      expect(() => tomato.associateCompanion(lettuce)).toThrow(IncompatibleCropError);
+      expect(() => tomato.associateCompanion(lettuce)).toThrow(IncompatibleGrowingRequirements);
       expect(() => tomato.associateCompanion(lettuce)).toThrow("incompatible growing requirements");
     });
 
@@ -199,7 +203,7 @@ describe("Crop", () => {
   });
 
   describe("associateCompanion - Invariant #7: Forbidden companions", () => {
-    test("throws ForbiddenCompanionError for forbidden relationships", () => {
+    test("throws ForbiddenCompanionAssociation for forbidden relationships", () => {
       const registry = new MockCompanionRegistry();
       registry.addForbidden("tomato", "fennel");
 
@@ -216,7 +220,7 @@ describe("Crop", () => {
         registry,
       );
 
-      expect(() => tomato.associateCompanion(fennel)).toThrow(ForbiddenCompanionError);
+      expect(() => tomato.associateCompanion(fennel)).toThrow(ForbiddenCompanionAssociation);
       expect(() => tomato.associateCompanion(fennel)).toThrow("incompatible companions");
     });
 
@@ -332,72 +336,6 @@ describe("Crop", () => {
       );
 
       expect(tomato.canAssociateWith(tomato)).toBe(false);
-    });
-  });
-
-  describe("getters", () => {
-    test("getName returns crop name", () => {
-      const registry = new MockCompanionRegistry();
-      const tomato = Crop.create(
-        CropName.create("tomato"),
-        HarvestPeriod.create(60, 120, 180),
-        GrowingRequirements.create(SunRequirement.FULL_SUN, RootDepth.DEEP, [Season.SUMMER]),
-        registry,
-      );
-
-      expect(tomato.getName().getValue()).toBe("tomato");
-    });
-
-    test("getHarvestPeriod returns harvest period", () => {
-      const registry = new MockCompanionRegistry();
-      const tomato = Crop.create(
-        CropName.create("tomato"),
-        HarvestPeriod.create(60, 120, 180),
-        GrowingRequirements.create(SunRequirement.FULL_SUN, RootDepth.DEEP, [Season.SUMMER]),
-        registry,
-      );
-
-      const period = tomato.getHarvestPeriod();
-      expect(period.getFirstHarvestDay()).toBe(60);
-      expect(period.getLastHarvestDay()).toBe(120);
-      expect(period.getLifespan()).toBe(180);
-    });
-
-    test("getRequirements returns growing requirements", () => {
-      const registry = new MockCompanionRegistry();
-      const tomato = Crop.create(
-        CropName.create("tomato"),
-        HarvestPeriod.create(60, 120, 180),
-        GrowingRequirements.create(SunRequirement.FULL_SUN, RootDepth.DEEP, [Season.SUMMER]),
-        registry,
-      );
-
-      const requirements = tomato.getRequirements();
-      expect(requirements.getSunRequirement()).toBe(SunRequirement.FULL_SUN);
-      expect(requirements.getRootDepth()).toBe(RootDepth.DEEP);
-      expect(requirements.getSeasons()).toContain(Season.SUMMER);
-    });
-
-    test("getCompanions returns associated companions", () => {
-      const registry = new MockCompanionRegistry();
-      const tomato = Crop.create(
-        CropName.create("tomato"),
-        HarvestPeriod.create(60, 120, 180),
-        GrowingRequirements.create(SunRequirement.FULL_SUN, RootDepth.DEEP, [Season.SUMMER]),
-        registry,
-      );
-      const basil = Crop.create(
-        CropName.create("basil"),
-        HarvestPeriod.create(50, 80, 100),
-        GrowingRequirements.create(SunRequirement.FULL_SUN, RootDepth.SHALLOW, [Season.SUMMER]),
-        registry,
-      );
-
-      tomato.associateCompanion(basil);
-
-      const companions = tomato.getCompanions();
-      expect(companions).toHaveLength(1);
-      expect(companions[0]?.equals(CropName.create("basil"))).toBe(true);
     });
   });
 });

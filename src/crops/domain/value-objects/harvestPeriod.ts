@@ -1,4 +1,4 @@
-import { InvalidHarvestPeriodError } from "@/crops/domain/exceptions/errors";
+import { InvalidHarvestPeriod } from "@/crops/domain/exceptions/errors";
 
 export class HarvestPeriod {
   private readonly firstHarvestDay: number;
@@ -13,17 +13,17 @@ export class HarvestPeriod {
 
   static create(firstHarvestDay: number, lastHarvestDay: number, lifespan: number): HarvestPeriod {
     if (firstHarvestDay < 0 || lastHarvestDay < 0 || lifespan < 0) {
-      throw new InvalidHarvestPeriodError("Days must be non-negative");
+      throw new InvalidHarvestPeriod("Days must be non-negative");
     }
 
     if (firstHarvestDay > lastHarvestDay) {
-      throw new InvalidHarvestPeriodError(
+      throw new InvalidHarvestPeriod(
         `First harvest day (${firstHarvestDay}) must be less than or equal to last harvest day (${lastHarvestDay})`,
       );
     }
 
     if (lastHarvestDay > lifespan) {
-      throw new InvalidHarvestPeriodError(`Last harvest day (${lastHarvestDay}) cannot exceed lifespan (${lifespan})`);
+      throw new InvalidHarvestPeriod(`Last harvest day (${lastHarvestDay}) cannot exceed lifespan (${lifespan})`);
     }
 
     return new HarvestPeriod(firstHarvestDay, lastHarvestDay, lifespan);

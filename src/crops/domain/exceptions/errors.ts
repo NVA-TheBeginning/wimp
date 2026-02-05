@@ -7,26 +7,26 @@ export abstract class DomainError extends Error {
   }
 }
 
-export class IncompatibleCropError extends DomainError {
+export class IncompatibleGrowingRequirements extends DomainError {
   constructor(crop1: CropName, crop2: CropName, reason: string) {
     super(`Cannot associate ${crop1.getValue()} with ${crop2.getValue()}: ${reason}`);
   }
 }
 
-export class SelfAssociationError extends DomainError {
+export class CannotAssociateCropToItself extends DomainError {
   constructor(cropName: CropName) {
     super(`Crop ${cropName.getValue()} cannot be associated with itself`);
   }
 }
 
-export class ForbiddenCompanionError extends DomainError {
+export class ForbiddenCompanionAssociation extends DomainError {
   constructor(crop1: CropName, crop2: CropName) {
     super(`${crop1.getValue()} and ${crop2.getValue()} are incompatible companions (forbidden relationship)`);
   }
 }
 
-export class InvalidCropNameError extends DomainError {}
+export class InvalidCropName extends DomainError {}
 
-export class InvalidHarvestPeriodError extends DomainError {}
+export class InvalidHarvestPeriod extends DomainError {}
 
-export class InvalidGrowingRequirementsError extends DomainError {}
+export class InvalidGrowingRequirements extends DomainError {}

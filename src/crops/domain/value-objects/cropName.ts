@@ -1,4 +1,4 @@
-import { InvalidCropNameError } from "@/crops/domain/exceptions/errors";
+import { InvalidCropName } from "@/crops/domain/exceptions/errors";
 
 export class CropName {
   private readonly value: string;
@@ -11,11 +11,11 @@ export class CropName {
     const normalized = name.trim().toLowerCase();
 
     if (normalized.length === 0) {
-      throw new InvalidCropNameError("Crop name cannot be empty");
+      throw new InvalidCropName("Crop name cannot be empty");
     }
 
     if (normalized.length > 100) {
-      throw new InvalidCropNameError("Crop name cannot exceed 100 characters");
+      throw new InvalidCropName("Crop name cannot exceed 100 characters");
     }
 
     return new CropName(normalized);

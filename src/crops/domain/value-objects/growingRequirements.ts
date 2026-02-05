@@ -1,4 +1,4 @@
-import { InvalidGrowingRequirementsError } from "@/crops/domain/exceptions/errors";
+import { InvalidGrowingRequirements } from "@/crops/domain/exceptions/errors";
 
 export enum SunRequirement {
   FULL_SUN = "FULL_SUN",
@@ -32,7 +32,7 @@ export class GrowingRequirements {
 
   static create(sunRequirement: SunRequirement, rootDepth: RootDepth, seasons: Season[]): GrowingRequirements {
     if (seasons.length === 0) {
-      throw new InvalidGrowingRequirementsError("At least one season is required");
+      throw new InvalidGrowingRequirements("At least one season is required");
     }
 
     return new GrowingRequirements(sunRequirement, rootDepth, seasons);
