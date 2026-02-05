@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+export const gardenSizeEnum = ["SMALL", "MEDIUM", "LARGE"] as const;
+export type GardenSize = (typeof gardenSizeEnum)[number];
+
 export const PositionSchema = z.object({
   x: z.number().int().min(0).max(4),
   y: z.number().int().min(0).max(4),
