@@ -4,7 +4,6 @@ import { CropName } from "@/crops/domain/value-objects/cropName";
 enum RelationType {
   Helps = "helps",
   Avoid = "avoid",
-  Required = "required",
 }
 
 interface Relationship {
@@ -81,20 +80,6 @@ export class CsvCompanionRegistry implements CompanionRegistry {
   isForbidden(crop: CropName, companion: CropName): boolean {
     const cropRelationships = this.relationships.get(crop.getValue()) || [];
     return cropRelationships.some((r) => r.destination === companion.getValue() && r.relation === RelationType.Avoid);
-  }
-
-  isRequired(crop: CropName, companion: CropName): boolean {
-    const cropRelationships = this.relationships.get(crop.getValue()) || [];
-    return cropRelationships.some(
-      (r) => r.destination === companion.getValue() && r.relation === RelationType.Required,
-    );
-  }
-
-  getRequiredCompanions(crop: CropName): CropName[] {
-    const cropRelationships = this.relationships.get(crop.getValue()) || [];
-    return cropRelationships
-      .filter((r) => r.relation === RelationType.Required)
-      .map((r) => CropName.create(r.destination));
   }
 
   getHelpfulCompanions(crop: CropName): CropName[] {

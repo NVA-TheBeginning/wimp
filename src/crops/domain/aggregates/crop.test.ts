@@ -7,7 +7,6 @@ import { HarvestPeriod } from "@/crops/domain/value-objects/harvestPeriod";
 class MockCompanionRegistry {
   private helpfulRelationships = new Map<string, Set<string>>();
   private forbiddenRelationships = new Map<string, Set<string>>();
-  private requiredRelationships = new Map<string, Set<string>>();
 
   addHelpful(crop: string, companion: string): void {
     if (!this.helpfulRelationships.has(crop)) {
@@ -23,13 +22,6 @@ class MockCompanionRegistry {
     this.forbiddenRelationships.get(crop)?.add(companion);
   }
 
-  addRequired(crop: string, companion: string): void {
-    if (!this.requiredRelationships.has(crop)) {
-      this.requiredRelationships.set(crop, new Set());
-    }
-    this.requiredRelationships.get(crop)?.add(companion);
-  }
-
   isHelpful(crop: CropName, companion: CropName): boolean {
     const companions = this.helpfulRelationships.get(crop.getValue());
     return companions?.has(companion.getValue()) ?? false;
@@ -38,16 +30,6 @@ class MockCompanionRegistry {
   isForbidden(crop: CropName, companion: CropName): boolean {
     const forbidden = this.forbiddenRelationships.get(crop.getValue());
     return forbidden?.has(companion.getValue()) ?? false;
-  }
-
-  isRequired(crop: CropName, companion: CropName): boolean {
-    const required = this.requiredRelationships.get(crop.getValue());
-    return required?.has(companion.getValue()) ?? false;
-  }
-
-  getRequiredCompanions(crop: CropName): CropName[] {
-    const required = this.requiredRelationships.get(crop.getValue()) || new Set();
-    return Array.from(required).map((name) => CropName.create(name));
   }
 
   getHelpfulCompanions(crop: CropName): CropName[] {
