@@ -27,7 +27,7 @@ export interface RawCrop {
 
 export const CropListResponseSchema = z.object({
   data: z.array(z.object({ links: z.object({ self: z.string() }) })),
-  links: z.object({ next: z.string().nullable() }),
+  links: z.object({ next: z.string().optional() }),
 });
 
 export const CropDetailSchema = z.object({

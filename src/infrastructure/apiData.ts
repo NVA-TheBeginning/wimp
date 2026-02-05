@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import type { z } from "zod";
+import type { z } from "zod/v4";
 import {
   CropDetailSchema,
   CropListResponseSchema,
