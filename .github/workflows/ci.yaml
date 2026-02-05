@@ -38,6 +38,9 @@ jobs:
     - name: Build
       run: bun --bun run build
 
+    - name: Run tests
+      run: bun --bun run test
+
 
   lint:
     name: Code quality

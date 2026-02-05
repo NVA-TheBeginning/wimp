@@ -1,4 +1,4 @@
-import type { GardenSize } from "../../../crops/domain/schemas/schemas";
+import type { GardenSize } from "@/crops/infrastructure/schemas/schemas";
 
 export class Garden {
   size: GardenSize;
