@@ -9,16 +9,15 @@ export const GrowthStageSchema = z.enum(["SEED", "SPROUT", "GROWING", "MATURE", 
 
 export const SeasonSchema = z.enum(["SPRING", "SUMMER", "FALL", "WINTER"]);
 
-export const SunNeedsSchema = z.enum(["full", "partial"]);
-
 export const PlantTypeSchema = z.object({
+  id: z.number().int().positive(),
   name: z.string(),
   daysToFirstHarvest: z.number().positive(),
   daysToLastHarvest: z.number().positive(),
   lifespan: z.number().positive(),
-  sunNeeds: SunNeedsSchema,
   companions: z.array(z.string()),
   incompatible: z.array(z.string()),
+  scientificName: z.string(),
 });
 
 export const PlantSchema = z.object({
@@ -32,7 +31,6 @@ export const PlantSchema = z.object({
 
 export const PlotSchema = z.object({
   position: PositionSchema,
-  soilMoisture: z.number().min(0).max(100),
   plant: PlantSchema.nullable(),
 });
 

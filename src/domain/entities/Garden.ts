@@ -1,10 +1,9 @@
-import type { GardenData, Season } from "../schemas/schemas";
+import { type GardenData, type Season, SeasonSchema } from "../schemas/schemas";
 import { Position } from "../value-objects/Position";
 import { Plant } from "./Plant";
 import { Plot } from "./Plot";
 
 const GRID_SIZE = 5;
-const SEASONS: Season[] = ["SPRING", "SUMMER", "FALL", "WINTER"];
 const DAYS_PER_SEASON = 30;
 
 export interface CompanionResult {
@@ -77,17 +76,10 @@ export class Garden {
     return companionResult;
   }
 
-  waterPlot(x: number, y: number): void {
-    const plot = this.getPlot(x, y);
-    if (!plot) throw new Error("Invalid position");
-    plot.water();
-  }
-
   harvestPlant(x: number, y: number): Plant | null {
     const plot = this.getPlot(x, y);
     if (!plot) throw new Error("Invalid position");
-    if (plot.isEmpty()) return null;
-    if (!plot.plant?.isHarvestable()) return null;
+    if (plot.isEmpty() || !plot.plant?.isHarvestable()) return null;
     return plot.removePlant();
   }
 
@@ -100,8 +92,7 @@ export class Garden {
     };
 
     for (const plot of this._plots.values()) {
-      if (!plot.plant || plot.position.equals(position)) continue;
-      if (!position.isAdjacent(plot.position)) continue;
+      if (!plot.plant || plot.position.equals(position) || !plot.plant.isHarvestable()) continue;
 
       const otherType = plot.plant.type;
 
@@ -127,8 +118,8 @@ export class Garden {
     this._currentDay++;
 
     if (this._currentDay % DAYS_PER_SEASON === 1 && this._currentDay > 1) {
-      const currentIdx = SEASONS.indexOf(this._season);
-      const nextSeason = SEASONS[(currentIdx + 1) % SEASONS.length];
+      const currentIdx = SeasonSchema.options.indexOf(this._season);
+      const nextSeason = SeasonSchema.options[(currentIdx + 1) % SeasonSchema.options.length];
       if (nextSeason) this._season = nextSeason;
     }
 
