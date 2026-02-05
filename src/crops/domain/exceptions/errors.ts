@@ -7,12 +7,6 @@ export abstract class DomainError extends Error {
   }
 }
 
-export class IncompatibleGrowingRequirements extends DomainError {
-  constructor(crop1: CropName, crop2: CropName, reason: string) {
-    super(`Cannot associate ${crop1.getValue()} with ${crop2.getValue()}: ${reason}`);
-  }
-}
-
 export class CannotAssociateCropToItself extends DomainError {
   constructor(cropName: CropName) {
     super(`Crop ${cropName.getValue()} cannot be associated with itself`);
@@ -28,5 +22,3 @@ export class ForbiddenCompanionAssociation extends DomainError {
 export class InvalidCropName extends DomainError {}
 
 export class InvalidHarvestPeriod extends DomainError {}
-
-export class InvalidGrowingRequirements extends DomainError {}
