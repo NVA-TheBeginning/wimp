@@ -1,6 +1,6 @@
 export class Crops {
   name: string;
-  companinons: Crops[];
+  companions: Crops[];
   spread: number;
   rowSpacing: number;
   firstHarvest: number;
@@ -9,7 +9,7 @@ export class Crops {
 
   constructor(
     name: string,
-    companinons: Crops[],
+    companions: Crops[],
     spread: number,
     rowSpacing: number,
     firstHarvest: number,
@@ -17,7 +17,7 @@ export class Crops {
     lifeSpan: number,
   ) {
     this.name = name;
-    this.companinons = companinons;
+    this.companions = companions;
     this.spread = spread;
     this.rowSpacing = rowSpacing;
     this.firstHarvest = firstHarvest;
