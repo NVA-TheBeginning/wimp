@@ -1,4 +1,4 @@
-import type { Crops } from "./crops";
+import type { Crops } from "../../../crops/domain/entities/crops";
 
 export class Gardener {
   name: string;
