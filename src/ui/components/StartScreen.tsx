@@ -3,6 +3,12 @@ import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 import { loadCrops } from "@/crops/infrastructure/apiData";
 import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
+import { Garden } from "@/garden/domain/entities/garden";
+import type { GardenSize } from "@/garden/domain/value-objects/gardenSize";
+import { GardenScreen } from "@/ui/components/GardenScreen";
+import { GardenSizeScreen } from "@/ui/components/GardenSizeScreen";
+
+type Step = "crops" | "size" | "garden";
 
 function capitalize(s: string) {
   if (s.length === 0) return s;
@@ -13,9 +19,10 @@ function capitalize(s: string) {
 export function StartScreen() {
   const [crops, setCrops] = useState<GrowstuffCrop[]>([]);
   const [selectedCrops, setSelectedCrops] = useState<Set<string>>(new Set());
-  const [confirmed, setConfirmed] = useState(false);
   const [query, setQuery] = useState("");
   const [focusSearch, setFocusSearch] = useState(false);
+  const [step, setStep] = useState<Step>("crops");
+  const [garden, setGarden] = useState<Garden | null>(null);
 
   useEffect(() => {
     loadCrops().then((c) => setCrops(c));
@@ -41,6 +48,8 @@ export function StartScreen() {
   };
 
   useKeyboard((key) => {
+    if (step !== "crops") return;
+
     if (key.name === "escape" && focusSearch) {
       setFocusSearch(false);
       return;
@@ -50,23 +59,31 @@ export function StartScreen() {
       return;
     }
     if (key.name === "c" && !focusSearch && selectedCrops.size > 0) {
-      setConfirmed(true);
+      setStep("size");
     }
   });
 
-  if (confirmed && selectedCrops.size > 0) {
-    const names = crops.filter((c) => selectedCrops.has(c.slug)).map((c) => capitalize(c.name));
+  const handleSizeConfirm = (size: GardenSize) => {
+    const newGarden = Garden.create(size);
+    setGarden(newGarden);
+    setStep("garden");
+  };
 
-    return (
-      <box alignItems="center" justifyContent="center" flexGrow={1}>
-        <box justifyContent="center" alignItems="flex-end">
-          <ascii-font font="tiny" text="WIMP" />
-          <text attributes={TextAttributes.DIM}>Vegetable Garden Simulator</text>
-          <text>{""}</text>
-          <text>{`Selected: ${names.join(", ")} (${names.length})`}</text>
-        </box>
-      </box>
-    );
+  const handleSizeBack = () => {
+    setStep("crops");
+  };
+
+  const handleQuit = () => {
+    process.exit(0);
+  };
+
+  if (step === "garden" && garden) {
+    const cropNames = crops.filter((c) => selectedCrops.has(c.slug)).map((c) => c.name);
+    return <GardenScreen garden={garden} cropNames={cropNames} onQuit={handleQuit} />;
+  }
+
+  if (step === "size") {
+    return <GardenSizeScreen onConfirm={handleSizeConfirm} onBack={handleSizeBack} />;
   }
 
   if (crops.length === 0) {
