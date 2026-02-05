@@ -1,8 +1,8 @@
 import { type SelectOption, TextAttributes } from "@opentui/core";
 import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
-import type { GrowstuffCrop } from "../../crops/domain/schemas/infrastructure";
-import { loadCrops } from "../../crops/infrastructure/apiData";
+import { loadCrops } from "@/crops/infrastructure/apiData";
+import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
 
 function capitalize(s: string) {
   if (s.length === 0) return s;
