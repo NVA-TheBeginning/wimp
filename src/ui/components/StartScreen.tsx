@@ -2,27 +2,59 @@ import { type SelectOption, TextAttributes } from "@opentui/core";
 import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 import { loadCrops } from "@/crops/infrastructure/apiData";
+import { JsonCompanionKnowledge } from "@/crops/infrastructure/jsonCompanionKnowledge";
 import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
-import { Garden } from "@/garden/domain/entities/garden";
-import type { GardenSize } from "@/garden/domain/value-objects/gardenSize";
+import {
+  type GenerateGardenPlanOutput,
+  GenerateGardenPlanUseCase,
+} from "@/planting-intelligence/application/use-cases/generateGardenPlan";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 import { GardenScreen } from "@/ui/components/GardenScreen";
-import { GardenSizeScreen } from "@/ui/components/GardenSizeScreen";
 
-type Step = "crops" | "size" | "garden";
+let planner: GenerateGardenPlanUseCase | null = null;
+let companionKnowledge: CompanionKnowledgePort | null = null;
 
-function capitalize(s: string) {
-  if (s.length === 0) return s;
-  if (s.length === 1) return s.toUpperCase();
-  return s.charAt(0).toUpperCase() + s.slice(1);
+function getCompanionKnowledge(): CompanionKnowledgePort {
+  if (!companionKnowledge) {
+    companionKnowledge = new JsonCompanionKnowledge();
+  }
+  return companionKnowledge;
 }
+
+function getPlanner(): GenerateGardenPlanUseCase {
+  if (!planner) {
+    planner = new GenerateGardenPlanUseCase(getCompanionKnowledge());
+  }
+  return planner;
+}
+
+type FocusZone = "list" | "search" | "area";
+
+function getCompanionKnowledge(): CompanionKnowledgePort {
+  if (!companionKnowledge) {
+    companionKnowledge = new JsonCompanionKnowledge();
+  }
+  return companionKnowledge;
+}
+
+function getPlanner(): GenerateGardenPlanUseCase {
+  if (!planner) {
+    planner = new GenerateGardenPlanUseCase(getCompanionKnowledge());
+  }
+  return planner;
+}
+
+type FocusZone = "list" | "search" | "area";
 
 export function StartScreen() {
   const [crops, setCrops] = useState<GrowstuffCrop[]>([]);
   const [selectedCrops, setSelectedCrops] = useState<Set<string>>(new Set());
+  const [confirmed, setConfirmed] = useState(false);
+  const [plan, setPlan] = useState<GenerateGardenPlanOutput | null>(null);
+  const [planError, setPlanError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [focusSearch, setFocusSearch] = useState(false);
-  const [step, setStep] = useState<Step>("crops");
-  const [garden, setGarden] = useState<Garden | null>(null);
+  const [areaM2, setAreaM2] = useState("9");
+  const [focusZone, setFocusZone] = useState<FocusZone>("list");
 
   useEffect(() => {
     loadCrops().then((c) => setCrops(c));
@@ -31,7 +63,7 @@ export function StartScreen() {
   const filtered = crops.filter((c) => c.name.toLowerCase().includes(query.toLowerCase()));
 
   const options: SelectOption[] = filtered.map((c) => ({
-    name: `${selectedCrops.has(c.slug) ? "✔ " : "  "}${capitalize(c.name)}`,
+    name: `${selectedCrops.has(c.slug) ? "● " : "  "}${truncate(capitalize(c.name), 34)}`,
     description: "",
     value: c.slug,
   }));
@@ -47,49 +79,62 @@ export function StartScreen() {
     });
   };
 
-  useKeyboard((key) => {
-    if (step !== "crops") return;
+  const restartPlan = () => {
+    setConfirmed(false);
+    setPlan(null);
+    setPlanError(null);
+    setFocusZone("list");
+  };
 
-    if (key.name === "escape" && focusSearch) {
-      setFocusSearch(false);
+  useKeyboard((key) => {
+    if (confirmed) {
       return;
     }
-    if (key.name === "tab" && !focusSearch) {
-      setFocusSearch(true);
+
+    if (key.name === "escape" && focusZone !== "list") {
+      setFocusZone("list");
       return;
     }
-    if (key.name === "c" && !focusSearch && selectedCrops.size > 0) {
-      setStep("size");
+    if (key.name === "tab") {
+      setFocusZone((prev) => {
+        if (prev === "list") return "search";
+        if (prev === "search") return "area";
+        return "list";
+      });
+      return;
+    }
+    if (key.name === "c" && focusZone === "list" && selectedCrops.size > 0) {
+      try {
+        const computed = getPlanner().execute({
+          selectedPlantIds: Array.from(selectedCrops),
+          areaM2: Number(areaM2.replace(",", ".")),
+        });
+        setPlan(computed);
+        setPlanError(null);
+        setConfirmed(true);
+      } catch (error) {
+        setPlanError(error instanceof Error ? error.message : "Failed to generate garden plan");
+        setConfirmed(false);
+      }
     }
   });
 
-  const handleSizeConfirm = (size: GardenSize) => {
-    const newGarden = Garden.create(size);
-    setGarden(newGarden);
-    setStep("garden");
-  };
-
-  const handleSizeBack = () => {
-    setStep("crops");
-  };
-
-  const handleQuit = () => {
-    process.exit(0);
-  };
-
-  if (step === "garden" && garden) {
-    const cropNames = crops.filter((c) => selectedCrops.has(c.slug)).map((c) => c.name);
-    return <GardenScreen garden={garden} cropNames={cropNames} onQuit={handleQuit} />;
-  }
-
-  if (step === "size") {
-    return <GardenSizeScreen onConfirm={handleSizeConfirm} onBack={handleSizeBack} />;
+  if (confirmed && selectedCrops.size > 0 && plan) {
+    const bySlug = new Map(crops.map((crop) => [crop.slug, crop.name]));
+    return (
+      <GardenScreen
+        plan={plan}
+        cropNamesBySlug={bySlug}
+        companionKnowledge={getCompanionKnowledge()}
+        onRestart={restartPlan}
+      />
+    );
   }
 
   if (crops.length === 0) {
     return (
       <box alignItems="center" justifyContent="center" flexGrow={1}>
-        <text attributes={TextAttributes.DIM}>Loading crops...</text>
+        <text fg="#81C784">Loading crops...</text>
       </box>
     );
   }
@@ -97,27 +142,82 @@ export function StartScreen() {
   return (
     <box flexDirection="column" alignItems="center" justifyContent="center" flexGrow={1}>
       <box justifyContent="center" alignItems="flex-end">
-        <ascii-font font="tiny" text="WIMP" />
-        <text attributes={TextAttributes.DIM}>Vegetable Garden Simulator</text>
+        <ascii-font font="tiny" text="WIMP" color="#4CAF50" />
+        <text fg="#81C784">Vegetable Garden Simulator</text>
       </box>
-      <text>{""}</text>
-      <text>What would you like to plant?</text>
-      <text>{""}</text>
-      <box border borderStyle="rounded" title="Search" titleAlignment="center" width={40}>
-        <input value={query} onChange={setQuery} placeholder="Type to filter..." focused={focusSearch} width={38} />
+      <text fg="#E0E0E0" attributes={TextAttributes.BOLD} marginTop={1}>
+        What would you like to plant?
+      </text>
+      <box
+        border
+        borderStyle="rounded"
+        borderColor={focusZone === "search" ? "#4CAF50" : "#2E7D32"}
+        title="Search"
+        titleAlignment="center"
+        width={40}
+        marginTop={1}
+      >
+        <input
+          value={query}
+          onChange={setQuery}
+          placeholder="Type to filter..."
+          focused={focusZone === "search"}
+          width={38}
+          cursorColor="#FFFFFF"
+          placeholderColor="#9E9E9E"
+          textColor="#E0E0E0"
+        />
+      </box>
+      <box
+        border
+        borderStyle="rounded"
+        borderColor={focusZone === "area" ? "#4CAF50" : "#2E7D32"}
+        title="Garden area (m2)"
+        titleAlignment="center"
+        width={40}
+        marginTop={1}
+      >
+        <input
+          value={areaM2}
+          onChange={setAreaM2}
+          placeholder="Example: 9"
+          focused={focusZone === "area"}
+          width={38}
+          cursorColor="#FFFFFF"
+          placeholderColor="#9E9E9E"
+          textColor="#E0E0E0"
+        />
       </box>
       <box flexDirection="column" alignItems="center" marginTop={1}>
         <select
           options={options}
           onSelect={handleToggle}
-          focused={!focusSearch}
+          focused={focusZone === "list"}
           height={selectHeight}
           width={40}
           showScrollIndicator={true}
+          selectedBackgroundColor="#2E7D32"
+          selectedTextColor="#FFFFFF"
+          textColor="#E0E0E0"
         />
       </box>
-      <text>{""}</text>
-      <text attributes={TextAttributes.DIM}>{"Tab Search · Esc List · ↑/↓ Navigate · Enter Toggle · c Confirm"}</text>
+      {planError ? (
+        <text fg="#EF5350" attributes={TextAttributes.BOLD}>
+          {`Error: ${planError}`}
+        </text>
+      ) : null}
+      <text marginTop={1}>
+        <b fg="#81C784">Tab</b>
+        <span fg="#9E9E9E"> cycle focus </span>
+        <b fg="#81C784">Esc</b>
+        <span fg="#9E9E9E"> list </span>
+        <b fg="#81C784">↑↓</b>
+        <span fg="#9E9E9E"> navigate </span>
+        <b fg="#81C784">Enter</b>
+        <span fg="#9E9E9E"> toggle </span>
+        <b fg="#81C784">c</b>
+        <span fg="#9E9E9E"> compute plan</span>
+      </text>
     </box>
   );
 }

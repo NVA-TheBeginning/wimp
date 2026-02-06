@@ -1,51 +1,94 @@
 import { TextAttributes } from "@opentui/core";
 import { useKeyboard } from "@opentui/react";
-import { useState } from "react";
-import type { Garden } from "@/garden/domain/entities/garden";
+import { useMemo, useState } from "react";
+import type { GenerateGardenPlanOutput } from "@/planting-intelligence/application/use-cases/generateGardenPlan";
+import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
+import { InspectNeighbor } from "@/ui/components/InspectNeighbor";
+import { capitalize, truncate } from "@/ui/utils/text";
 
 interface GardenScreenProps {
-  garden: Garden;
-  cropNames: string[];
-  onQuit: () => void;
+  plan: GenerateGardenPlanOutput;
+  cropNamesBySlug: Map<string, string>;
+  companionKnowledge: CompanionKnowledgePort;
+  onRestart: () => void;
 }
 
-function capitalize(s: string): string {
-  if (s.length === 0) return s;
-  return s.charAt(0).toUpperCase() + s.slice(1);
+function formatPlanCode(index: number): string {
+  return String(index + 1).padStart(2, "0");
 }
 
-export function GardenScreen({ garden, cropNames, onQuit }: GardenScreenProps) {
-  const dimension = garden.getDimension();
-  const sizeLabel = garden.getSize().getValue().toLowerCase();
+function formatPlanCode(index: number): string {
+  return String(index + 1).padStart(2, "0");
+}
+
+export function GardenScreen({ plan, cropNamesBySlug, companionKnowledge, onRestart }: GardenScreenProps) {
   const [cursorRow, setCursorRow] = useState(0);
   const [cursorCol, setCursorCol] = useState(0);
 
+  const codeByPlantId = useMemo(() => {
+    const map = new Map<string, string>();
+    for (let index = 0; index < plan.allocations.length; index += 1) {
+      const allocation = plan.allocations[index];
+      if (!allocation) continue;
+      map.set(allocation.plantId, formatPlanCode(index));
+    }
+    return map;
+  }, [plan.allocations]);
+
+  const plantByCell = useMemo(() => {
+    const grid: Array<Array<string | null>> = Array.from({ length: plan.gridSide }, () =>
+      Array.from({ length: plan.gridSide }, () => null),
+    );
+
+    for (const position of plan.positions) {
+      const row = grid[position.gridY];
+      if (!row) continue;
+      row[position.gridX] = position.plantId;
+    }
+
+    return grid;
+  }, [plan.gridSide, plan.positions]);
+
   useKeyboard((key) => {
-    if (key.name === "up") setCursorRow((r) => Math.max(0, r - 1));
-    if (key.name === "down") setCursorRow((r) => Math.min(dimension - 1, r + 1));
-    if (key.name === "left") setCursorCol((c) => Math.max(0, c - 1));
-    if (key.name === "right") setCursorCol((c) => Math.min(dimension - 1, c + 1));
-    if (key.name === "q") onQuit();
+    if (key.name === "up") setCursorRow((row) => Math.max(0, row - 1));
+    if (key.name === "down") setCursorRow((row) => Math.min(plan.gridSide - 1, row + 1));
+    if (key.name === "left") setCursorCol((col) => Math.max(0, col - 1));
+    if (key.name === "right") setCursorCol((col) => Math.min(plan.gridSide - 1, col + 1));
+    if (key.name === "q" || key.name === "r") onRestart();
   });
 
   const renderCell = (row: number, col: number) => {
+    const plantId = plantByCell[row]?.[col];
+    const code = plantId ? (codeByPlantId.get(plantId) ?? "??") : "..";
+    const cellText = ` ${code} `;
     const isSelected = row === cursorRow && col === cursorCol;
+
     if (isSelected) {
       return (
-        <text key={`${row}-${col}`} attributes={TextAttributes.INVERSE}>
-          {"[ ]"}
+        <text key={`${row}-${col}`} bg="#2E7D32" fg="#FFFFFF" attributes={TextAttributes.BOLD}>
+          {cellText}
         </text>
       );
     }
+
+    if (plantId) {
+      return (
+        <text key={`${row}-${col}`} fg="#81C784">
+          {cellText}
+        </text>
+      );
+    }
+
     return (
-      <text key={`${row}-${col}`} attributes={TextAttributes.DIM}>
-        {" · "}
+      <text key={`${row}-${col}`} fg="#5D4037" attributes={TextAttributes.DIM}>
+        {cellText}
       </text>
     );
   };
 
   const renderRow = (row: number) => {
-    const cells = Array.from({ length: dimension }, (_, col) => renderCell(row, col));
+    const cells = Array.from({ length: plan.gridSide }, (_, col) => renderCell(row, col));
     return (
       <box key={`row-${row}`} flexDirection="row">
         {cells}
@@ -53,12 +96,61 @@ export function GardenScreen({ garden, cropNames, onQuit }: GardenScreenProps) {
     );
   };
 
-  const rows = Array.from({ length: dimension }, (_, row) => renderRow(row));
+  const rows = Array.from({ length: plan.gridSide }, (_, row) => renderRow(row));
+  const selectedPlantId = plantByCell[cursorRow]?.[cursorCol];
+  const selectedName = selectedPlantId ? capitalize(cropNamesBySlug.get(selectedPlantId) ?? selectedPlantId) : "Empty";
+  const selectedCode = selectedPlantId ? (codeByPlantId.get(selectedPlantId) ?? "??") : "..";
+  const selectedPlant = selectedPlantId ? PlantId.create(selectedPlantId) : null;
+  const legendLines = plan.allocations.map((allocation) => {
+    const name = capitalize(cropNamesBySlug.get(allocation.plantId) ?? allocation.plantId);
+    const code = codeByPlantId.get(allocation.plantId) ?? "??";
+    return `${code} ${name} x${allocation.quantity} (${allocation.source})`;
+  });
+
+  const inspectOffsets = [
+    { label: "Up", row: -1, col: 0 },
+    { label: "Right", row: 0, col: 1 },
+    { label: "Down", row: 1, col: 0 },
+    { label: "Left", row: 0, col: -1 },
+  ];
+
+  const inspectLines = inspectOffsets.map((offset) => {
+    const neighborRow = cursorRow + offset.row;
+    const neighborCol = cursorCol + offset.col;
+
+    if (neighborRow < 0 || neighborRow >= plan.gridSide || neighborCol < 0 || neighborCol >= plan.gridSide) {
+      return `${offset.label}: edge`;
+    }
+
+    const neighborPlantId = plantByCell[neighborRow]?.[neighborCol];
+    if (!neighborPlantId) {
+      return `${offset.label}: empty`;
+    }
+
+    const neighborPlant = PlantId.create(neighborPlantId);
+    const neighborName = capitalize(cropNamesBySlug.get(neighborPlantId) ?? neighborPlantId);
+    const neighborCode = codeByPlantId.get(neighborPlantId) ?? "??";
+
+    if (!selectedPlant) {
+      return `${offset.label}: ${neighborCode} ${neighborName}`;
+    }
+
+    const score = companionKnowledge.getCompatibilityScore(selectedPlant, neighborPlant);
+    if (score < 0) {
+      return `${offset.label}: ${neighborCode} ${neighborName} -> incompatible (${score})`;
+    }
+
+    if (score > 0) {
+      return `${offset.label}: ${neighborCode} ${neighborName} -> compatible (+${score})`;
+    }
+
+    return `${offset.label}: ${neighborCode} ${neighborName} -> neutral (0)`;
+  });
 
   return (
     <box flexDirection="column" flexGrow={1}>
       <box justifyContent="center" paddingTop={1}>
-        <ascii-font font="tiny" text="WIMP" />
+        <ascii-font font="tiny" text="WIMP" color="#4CAF50" />
       </box>
 
       <box flexDirection="row" flexGrow={1} justifyContent="center" alignItems="center">
@@ -66,7 +158,8 @@ export function GardenScreen({ garden, cropNames, onQuit }: GardenScreenProps) {
           <box
             border
             borderStyle="rounded"
-            title={` 🌱 Garden (${dimension}×${dimension}) `}
+            borderColor="#4CAF50"
+            title={` Garden Map (${plan.gridSide}x${plan.gridSide}) `}
             titleAlignment="center"
             flexDirection="column"
             padding={1}
@@ -75,42 +168,100 @@ export function GardenScreen({ garden, cropNames, onQuit }: GardenScreenProps) {
           </box>
 
           <box marginTop={1} flexDirection="row" justifyContent="center">
-            <text attributes={TextAttributes.DIM}>{`Position: (${cursorRow + 1}, ${cursorCol + 1})`}</text>
+            <text>
+              <span fg="#9E9E9E">Position: </span>
+              <b fg="#81C784">{`(${cursorRow + 1}, ${cursorCol + 1})`}</b>
+              <span fg="#9E9E9E"> · Cell: </span>
+              <b fg="#81C784">{`${selectedCode} ${selectedName}`}</b>
+            </text>
           </box>
         </box>
 
-        <box flexDirection="column" width={26} marginLeft={3}>
+        <box flexDirection="column" width={44} marginLeft={3}>
           <box
             border
             borderStyle="rounded"
-            title=" 📋 Crops "
-            titleAlignment="center"
-            flexDirection="column"
-            padding={1}
-          >
-            {cropNames.map((name) => (
-              <text key={name}>• {capitalize(name)}</text>
-            ))}
-          </box>
-
-          <box
-            border
-            borderStyle="rounded"
-            title=" ℹ️ Info "
+            borderColor="#2E7D32"
+            title="Legend"
             titleAlignment="center"
             flexDirection="column"
             padding={1}
             marginTop={1}
           >
-            <text>{`Size:  ${capitalize(sizeLabel)}`}</text>
-            <text>{`Crops: ${cropNames.length}`}</text>
-            <text>{`Plots: ${dimension * dimension}`}</text>
+            {plan.allocations.map((allocation) => {
+              const name = truncate(capitalize(cropNamesBySlug.get(allocation.plantId) ?? allocation.plantId), 20);
+              const code = codeByPlantId.get(allocation.plantId) ?? "??";
+              return (
+                <text key={allocation.plantId}>
+                  <b fg="#81C784">{code}</b>
+                  <span fg="#E0E0E0">{` ${name} x${allocation.quantity} (${allocation.source})`}</span>
+                </text>
+              );
+            })}
+          </box>
+
+          <box
+            border
+            borderStyle="rounded"
+            borderColor="#8D6E63"
+            title="Info"
+            titleAlignment="center"
+            flexDirection="column"
+            padding={1}
+            marginTop={1}
+          >
+            <text>
+              <span fg="#9E9E9E">Area: </span>
+              <b fg="#81C784">{`${plan.areaM2} m\u00B2`}</b>
+              <span fg="#9E9E9E">{` (${plan.sideLengthMeters.toFixed(2)}m x ${plan.sideLengthMeters.toFixed(2)}m)`}</span>
+            </text>
+            <text>
+              <span fg="#9E9E9E">Cell size: </span>
+              <b fg="#81C784">{`${plan.cellSizeMeters.toFixed(2)}m`}</b>
+            </text>
+            <text>
+              <span fg="#9E9E9E">Total plants: </span>
+              <b fg="#81C784">{`${plan.positions.length}`}</b>
+            </text>
+          </box>
+
+          <box
+            border
+            borderStyle="rounded"
+            borderColor="#2E7D32"
+            title="Inspect"
+            titleAlignment="center"
+            flexDirection="column"
+            padding={1}
+            marginTop={1}
+          >
+            {inspectDirections.map((dir) => (
+              <InspectNeighbor
+                key={dir.label}
+                label={dir.label}
+                neighborRow={cursorRow + dir.dRow}
+                neighborCol={cursorCol + dir.dCol}
+                gridSide={plan.gridSide}
+                plantByCell={plantByCell}
+                codeByPlantId={codeByPlantId}
+                cropNamesBySlug={cropNamesBySlug}
+                selectedPlant={selectedPlant}
+                companionKnowledge={companionKnowledge}
+              />
+            ))}
           </box>
         </box>
       </box>
 
       <box justifyContent="center" paddingBottom={1}>
-        <text attributes={TextAttributes.DIM}>↑↓←→ Move · Enter Plant · q Quit</text>
+        <text>
+          <b fg="#81C784">↑↓←→</b>
+          <span fg="#9E9E9E"> Move </span>
+          <b fg="#81C784">r</b>
+          <span fg="#9E9E9E"> Restart </span>
+          <b fg="#81C784">q</b>
+          <span fg="#9E9E9E"> Quit</span>
+        </text>
       </box>
     </box>
   );
