@@ -1,13 +1,32 @@
-import type { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import type { Crop } from "@/crops/domain/aggregates/crop";
+import type { GardenSize } from "@/garden/domain/value-objects/gardenSize";
 
 export class Garden {
-  area: GardenArea;
+  private readonly size: GardenSize;
+  private readonly crops: Set<Crop>;
 
-  private constructor(area: GardenArea) {
-    this.area = area;
+  private constructor(size: GardenSize) {
+    this.size = size;
+    this.crops = new Set();
   }
 
   static create(area: GardenArea): Garden {
     return new Garden(area);
+  }
+
+  addCrop(crop: Crop): void {
+    this.crops.add(crop);
+  }
+
+  getCrops(): Crop[] {
+    return Array.from(this.crops);
+  }
+
+  getSize(): GardenSize {
+    return this.size;
+  }
+
+  getDimension(): number {
+    return this.size.getDimension();
   }
 }
