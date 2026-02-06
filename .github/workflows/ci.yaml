@@ -35,6 +35,9 @@ jobs:
     - name: Install dependencies
       run: bun ci
 
+    - name: Generate companions
+      run: bun --bun run generate:companions
+
     - name: Build
       run: bun --bun run build
 

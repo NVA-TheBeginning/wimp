@@ -1,12 +1,15 @@
 import type { Crop } from "@/crops/domain/aggregates/crop";
+import { GardenPlanted } from "@/garden/domain/events/gardenPlanted";
 import type { GardenSize } from "@/garden/domain/value-objects/gardenSize";
+import { AggregateRoot } from "@/shared/domain/aggregateRoot";
 
-export class Garden {
+export class Garden extends AggregateRoot {
   private readonly size: GardenSize;
   private readonly crops: Set<Crop>;
   private readonly field: Crop[] = [];
 
   private constructor(size: GardenSize) {
+    super();
     this.size = size;
     this.crops = new Set();
   }
@@ -29,6 +32,7 @@ export class Garden {
       this.crops.add(crop);
       this.field.push(crop);
     }
+    this.addDomainEvent(new GardenPlanted(crops.length));
   }
 
   getField(): Crop[] {
