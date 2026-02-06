@@ -1,3 +1,4 @@
+import companionsData from "@/../data/companions.json" with { type: "json" };
 import type { CompanionRegistry } from "@/crops/domain/services/companionRegistry";
 import { CropName } from "@/crops/domain/value-objects/cropName";
 
@@ -17,6 +18,16 @@ export class CsvCompanionRegistry implements CompanionRegistry {
 
   private constructor(relationships: Map<string, Relationship[]>) {
     this.relationships = relationships;
+  }
+
+  static create(): CsvCompanionRegistry {
+    const header = "source,relation,destination";
+    const lines = (companionsData as { from: string; to: string; type: string }[])
+      .filter((edge) => edge.type === "helps" || edge.type === "avoid")
+      .map((edge) => `${edge.from},${edge.type},${edge.to}`);
+
+    const csvData = [header, ...lines].join("\n");
+    return CsvCompanionRegistry.fromCsv(csvData);
   }
 
   static fromCsv(csvData: string): CsvCompanionRegistry {

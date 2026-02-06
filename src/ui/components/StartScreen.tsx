@@ -1,10 +1,16 @@
 import { type SelectOption, TextAttributes } from "@opentui/core";
 import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
+import { Crop } from "@/crops/domain/aggregates/crop";
+import { CropName } from "@/crops/domain/value-objects/cropName";
+import { HarvestPeriod } from "@/crops/domain/value-objects/harvestPeriod";
 import { loadCrops } from "@/crops/infrastructure/apiData";
+import { CsvCompanionRegistry } from "@/crops/infrastructure/csvLoader";
 import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
 import { Garden } from "@/garden/domain/entities/garden";
 import type { GardenSize } from "@/garden/domain/value-objects/gardenSize";
+import type { PlantingLayoutResult } from "@/planting-intelligence/domain/services/plantingLayoutResult";
+import { GreedyPlantingStrategy } from "@/planting-intelligence/domain/services/plantingStrategy";
 import { GardenScreen } from "@/ui/components/GardenScreen";
 import { GardenSizeScreen } from "@/ui/components/GardenSizeScreen";
 
@@ -23,6 +29,7 @@ export function StartScreen() {
   const [focusSearch, setFocusSearch] = useState(false);
   const [step, setStep] = useState<Step>("crops");
   const [garden, setGarden] = useState<Garden | null>(null);
+  const [layoutResult, setLayoutResult] = useState<PlantingLayoutResult | null>(null);
 
   useEffect(() => {
     loadCrops().then((c) => setCrops(c));
@@ -65,7 +72,26 @@ export function StartScreen() {
 
   const handleSizeConfirm = (size: GardenSize) => {
     const newGarden = Garden.create(size);
+    const registry = CsvCompanionRegistry.create();
+
+    const selectedCropEntities: Crop[] = crops
+      .filter((c) => selectedCrops.has(c.slug))
+      .map((c) =>
+        Crop.create(
+          CropName.create(c.name),
+          HarvestPeriod.create(c.medianDaysToFirstHarvest ?? 0, c.medianDaysToLastHarvest ?? 0, c.medianLifespan ?? 0),
+          registry,
+        ),
+      );
+
+    const totalSlots = newGarden.getDimension() * newGarden.getDimension();
+    const strategy = new GreedyPlantingStrategy();
+    const layout = strategy.planLinearLayout(selectedCropEntities, registry, totalSlots);
+
+    newGarden.plantCrops(layout.getCropsInOrder());
+
     setGarden(newGarden);
+    setLayoutResult(layout);
     setStep("garden");
   };
 
@@ -77,9 +103,8 @@ export function StartScreen() {
     process.exit(0);
   };
 
-  if (step === "garden" && garden) {
-    const cropNames = crops.filter((c) => selectedCrops.has(c.slug)).map((c) => c.name);
-    return <GardenScreen garden={garden} cropNames={cropNames} onQuit={handleQuit} />;
+  if (step === "garden" && garden && layoutResult) {
+    return <GardenScreen garden={garden} layoutResult={layoutResult} onQuit={handleQuit} />;
   }
 
   if (step === "size") {
