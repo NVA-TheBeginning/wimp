@@ -1,0 +1,2922 @@
+[
+  {
+    "from": "apple",
+    "to": "chives",
+    "type": "helped_by"
+  },
+  {
+    "from": "apple",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "apple",
+    "to": "comfrey",
+    "type": "helped_by"
+  },
+  {
+    "from": "apple",
+    "to": "garlic",
+    "type": "helped_by"
+  },
+  {
+    "from": "apple",
+    "to": "leek",
+    "type": "helped_by"
+  },
+  {
+    "from": "apple",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "apple",
+    "to": "walnut",
+    "type": "avoid"
+  },
+  {
+    "from": "apricot",
+    "to": "chilli-pepper",
+    "type": "avoid"
+  },
+  {
+    "from": "asparagus",
+    "to": "basil",
+    "type": "helped_by"
+  },
+  {
+    "from": "asparagus",
+    "to": "comfrey",
+    "type": "helped_by"
+  },
+  {
+    "from": "asparagus",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "asparagus",
+    "to": "garlic",
+    "type": "avoid"
+  },
+  {
+    "from": "asparagus",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "asparagus",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "asparagus",
+    "to": "onion",
+    "type": "avoid"
+  },
+  {
+    "from": "asparagus",
+    "to": "parsley",
+    "type": "helped_by"
+  },
+  {
+    "from": "asparagus",
+    "to": "parsley",
+    "type": "helps"
+  },
+  {
+    "from": "basil",
+    "to": "anise",
+    "type": "helped_by"
+  },
+  {
+    "from": "basil",
+    "to": "asparagus",
+    "type": "helps"
+  },
+  {
+    "from": "basil",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "basil",
+    "to": "grapes",
+    "type": "helps"
+  },
+  {
+    "from": "basil",
+    "to": "oregano",
+    "type": "helps"
+  },
+  {
+    "from": "basil",
+    "to": "thyme",
+    "type": "avoid"
+  },
+  {
+    "from": "beet",
+    "to": "brassica",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "beet",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "beet",
+    "to": "bush-bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "bush-bean",
+    "type": "helps"
+  },
+  {
+    "from": "beet",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "beet",
+    "to": "catnip",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "garlic",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "kohlrabi",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "kohlrabi",
+    "type": "helps"
+  },
+  {
+    "from": "beet",
+    "to": "lettuce",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "beet",
+    "to": "mint",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "beet",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "beet",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "blueberry",
+    "to": "bay",
+    "type": "helped_by"
+  },
+  {
+    "from": "blueberry",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "blueberry",
+    "to": "strawberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "blueberry",
+    "to": "yarrow",
+    "type": "helped_by"
+  },
+  {
+    "from": "borage",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "borage",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "borage",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "borage",
+    "to": "squash",
+    "type": "helps"
+  },
+  {
+    "from": "borage",
+    "to": "strawberry",
+    "type": "helps"
+  },
+  {
+    "from": "brassica",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "beet",
+    "type": "helps"
+  },
+  {
+    "from": "brassica",
+    "to": "borage",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "celery",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "chard",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "chilli-pepper",
+    "type": "avoid"
+  },
+  {
+    "from": "brassica",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "brassica",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "garlic",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "hyssop",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "mustard",
+    "type": "avoid"
+  },
+  {
+    "from": "brassica",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "brassica",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "peppermint",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "rosemary",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "sage",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "spearmint",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "spinach",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "strawberry",
+    "type": "avoid"
+  },
+  {
+    "from": "brassica",
+    "to": "tansy",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "thyme",
+    "type": "helped_by"
+  },
+  {
+    "from": "brassica",
+    "to": "wheat",
+    "type": "helps"
+  },
+  {
+    "from": "brassica",
+    "to": "wormwood",
+    "type": "helped_by"
+  },
+  {
+    "from": "broccoli",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "broccoli",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "broccoli",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "broccoli",
+    "to": "lettuce",
+    "type": "helped_by"
+  },
+  {
+    "from": "broccoli",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "broccoli",
+    "to": "mustard",
+    "type": "helped_by"
+  },
+  {
+    "from": "broccoli",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "broccoli",
+    "to": "turnip",
+    "type": "helped_by"
+  },
+  {
+    "from": "brussels-sprout",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "brussels-sprout",
+    "to": "sage",
+    "type": "helped_by"
+  },
+  {
+    "from": "brussels-sprout",
+    "to": "thyme",
+    "type": "helped_by"
+  },
+  {
+    "from": "bush-bean",
+    "to": "alfalfa",
+    "type": "avoid"
+  },
+  {
+    "from": "bush-bean",
+    "to": "celery",
+    "type": "helped_by"
+  },
+  {
+    "from": "bush-bean",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "bush-bean",
+    "to": "fennel",
+    "type": "avoid"
+  },
+  {
+    "from": "bush-bean",
+    "to": "soybean",
+    "type": "avoid"
+  },
+  {
+    "from": "bush-bean",
+    "to": "strawberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "bush-bean",
+    "to": "strawberry",
+    "type": "helps"
+  },
+  {
+    "from": "cabbage",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "cabbage",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "calendula",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "celery",
+    "type": "helps"
+  },
+  {
+    "from": "cabbage",
+    "to": "chinese-cabbage",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "grapes",
+    "type": "avoid"
+  },
+  {
+    "from": "cabbage",
+    "to": "green-onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "hyssop",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "mint",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "pot-marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "rosemary",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "sage",
+    "type": "helped_by"
+  },
+  {
+    "from": "cabbage",
+    "to": "thyme",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "carrot",
+    "to": "chives",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "dill",
+    "type": "avoid"
+  },
+  {
+    "from": "carrot",
+    "to": "flax",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "leek",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "leek",
+    "type": "helps"
+  },
+  {
+    "from": "carrot",
+    "to": "lettuce",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "carrot",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "carrot",
+    "to": "parsnip",
+    "type": "avoid"
+  },
+  {
+    "from": "carrot",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "carrot",
+    "to": "rosemary",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "sage",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "shallot",
+    "type": "helped_by"
+  },
+  {
+    "from": "carrot",
+    "to": "wormwood",
+    "type": "helped_by"
+  },
+  {
+    "from": "catnip",
+    "to": "eggplant",
+    "type": "helps"
+  },
+  {
+    "from": "cauliflower",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "cauliflower",
+    "to": "celery",
+    "type": "helps"
+  },
+  {
+    "from": "cauliflower",
+    "to": "chinese-cabbage",
+    "type": "helped_by"
+  },
+  {
+    "from": "cauliflower",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "cauliflower",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "cauliflower",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "cauliflower",
+    "to": "spinach",
+    "type": "helped_by"
+  },
+  {
+    "from": "cauliflower",
+    "to": "spinach",
+    "type": "helps"
+  },
+  {
+    "from": "cauliflower",
+    "to": "sunflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "celery",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "celery",
+    "to": "bush-bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "celery",
+    "to": "bush-bean",
+    "type": "helps"
+  },
+  {
+    "from": "celery",
+    "to": "cabbage",
+    "type": "helped_by"
+  },
+  {
+    "from": "celery",
+    "to": "cauliflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "celery",
+    "to": "corn",
+    "type": "avoid"
+  },
+  {
+    "from": "celery",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "celery",
+    "to": "leek",
+    "type": "helped_by"
+  },
+  {
+    "from": "celery",
+    "to": "snapdragon",
+    "type": "helped_by"
+  },
+  {
+    "from": "chamomile",
+    "to": "anise",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "basil",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "borage",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "catnip",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "chervil",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "chives",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "dill",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "fennel",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "flax",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "garlic",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "hyssop",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "lavender",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "lovage",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "oregano",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "parsley",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "peppermint",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "rosemary",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "sage",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "spearmint",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "stinging-nettle",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "summer-savory",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "tarragon",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "thyme",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "wheat",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "wormwood",
+    "type": "helps"
+  },
+  {
+    "from": "chamomile",
+    "to": "yarrow",
+    "type": "helps"
+  },
+  {
+    "from": "chard",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "chard",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "chervil",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "chervil",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "basil",
+    "type": "helped_by"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "bean",
+    "type": "avoid"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "brussels-sprout",
+    "type": "avoid"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "marjoram",
+    "type": "helped_by"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "okra",
+    "type": "helped_by"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "okra",
+    "type": "helps"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "chilli-pepper",
+    "to": "sunflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "chives",
+    "to": "apple",
+    "type": "helps"
+  },
+  {
+    "from": "chives",
+    "to": "bean",
+    "type": "avoid"
+  },
+  {
+    "from": "chives",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "chives",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "chives",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "chives",
+    "to": "carrot",
+    "type": "helped_by"
+  },
+  {
+    "from": "chives",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "chives",
+    "to": "grapes",
+    "type": "helps"
+  },
+  {
+    "from": "chives",
+    "to": "mustard",
+    "type": "helps"
+  },
+  {
+    "from": "chives",
+    "to": "pea",
+    "type": "avoid"
+  },
+  {
+    "from": "chives",
+    "to": "rose",
+    "type": "helps"
+  },
+  {
+    "from": "coriander",
+    "to": "anise",
+    "type": "helps"
+  },
+  {
+    "from": "coriander",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "coriander",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "coriander",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "coriander",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "coriander",
+    "to": "spinach",
+    "type": "helps"
+  },
+  {
+    "from": "corn",
+    "to": "amaranth",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "corn",
+    "to": "celery",
+    "type": "avoid"
+  },
+  {
+    "from": "corn",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "morning-glory",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "parsley",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "peanut",
+    "type": "helped_by"
+  },
+  {
+    "from": "corn",
+    "to": "soybean",
+    "type": "helps"
+  },
+  {
+    "from": "corn",
+    "to": "sunflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "amaranth",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "cucumber",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "carrot",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "celery",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "garlic",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "kohlrabi",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "kohlrabi",
+    "type": "helps"
+  },
+  {
+    "from": "cucumber",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "cucumber",
+    "to": "malabar-spinach",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "cucumber",
+    "to": "sunflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "dill",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "carrot",
+    "type": "avoid"
+  },
+  {
+    "from": "dill",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "eggplant",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "fennel",
+    "type": "helped_by"
+  },
+  {
+    "from": "dill",
+    "to": "fennel",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "dill",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "eggplant",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "eggplant",
+    "to": "catnip",
+    "type": "helped_by"
+  },
+  {
+    "from": "eggplant",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "eggplant",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "eggplant",
+    "to": "green-bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "eggplant",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "eggplant",
+    "to": "mint",
+    "type": "helped_by"
+  },
+  {
+    "from": "eggplant",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "eggplant",
+    "to": "tarragon",
+    "type": "helped_by"
+  },
+  {
+    "from": "eggplant",
+    "to": "thyme",
+    "type": "helped_by"
+  },
+  {
+    "from": "fava-bean",
+    "to": "celery",
+    "type": "helped_by"
+  },
+  {
+    "from": "fava-bean",
+    "to": "strawberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "fennel",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "fennel",
+    "to": "dill",
+    "type": "helps"
+  },
+  {
+    "from": "flax",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "beet",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "cabbage",
+    "type": "avoid"
+  },
+  {
+    "from": "garlic",
+    "to": "celery",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "grapes",
+    "type": "avoid"
+  },
+  {
+    "from": "garlic",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "garlic",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "rose",
+    "type": "helps"
+  },
+  {
+    "from": "garlic",
+    "to": "tarragon",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "basil",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "blackberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "cabbage",
+    "type": "avoid"
+  },
+  {
+    "from": "grapes",
+    "to": "chives",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "garlic",
+    "type": "avoid"
+  },
+  {
+    "from": "grapes",
+    "to": "hyssop",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "mustard",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "oregano",
+    "type": "helped_by"
+  },
+  {
+    "from": "grapes",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "hyssop",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "hyssop",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "hyssop",
+    "to": "grapes",
+    "type": "helps"
+  },
+  {
+    "from": "kohlrabi",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "kohlrabi",
+    "to": "beet",
+    "type": "helps"
+  },
+  {
+    "from": "kohlrabi",
+    "to": "cucumber",
+    "type": "helped_by"
+  },
+  {
+    "from": "kohlrabi",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "kohlrabi",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "basil",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "lemon-balm",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "marjoram",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "oregano",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "rosemary",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "sage",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "squash",
+    "type": "helps"
+  },
+  {
+    "from": "lavender",
+    "to": "thyme",
+    "type": "helps"
+  },
+  {
+    "from": "leek",
+    "to": "carrot",
+    "type": "helped_by"
+  },
+  {
+    "from": "leek",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "leek",
+    "to": "celery",
+    "type": "helps"
+  },
+  {
+    "from": "leek",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "leek",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "leek",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "leek",
+    "to": "swiss-chard",
+    "type": "avoid"
+  },
+  {
+    "from": "lettuce",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "lettuce",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "beet",
+    "type": "helps"
+  },
+  {
+    "from": "lettuce",
+    "to": "broccoli",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "lettuce",
+    "to": "cabbage",
+    "type": "avoid"
+  },
+  {
+    "from": "lettuce",
+    "to": "carrot",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "lettuce",
+    "to": "celery",
+    "type": "avoid"
+  },
+  {
+    "from": "lettuce",
+    "to": "cress",
+    "type": "avoid"
+  },
+  {
+    "from": "lettuce",
+    "to": "cucumber",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "kohlrabi",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "okra",
+    "type": "helps"
+  },
+  {
+    "from": "lettuce",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "lettuce",
+    "to": "parsley",
+    "type": "avoid"
+  },
+  {
+    "from": "lettuce",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "lettuce",
+    "to": "strawberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "lettuce",
+    "to": "thyme",
+    "type": "helped_by"
+  },
+  {
+    "from": "lovage",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "lovage",
+    "to": "rhubarb",
+    "type": "avoid"
+  },
+  {
+    "from": "lupin",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "lupin",
+    "to": "dill",
+    "type": "helps"
+  },
+  {
+    "from": "lupin",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "lupin",
+    "to": "rose",
+    "type": "helped_by"
+  },
+  {
+    "from": "lupin",
+    "to": "rose",
+    "type": "helps"
+  },
+  {
+    "from": "lupin",
+    "to": "rosemary",
+    "type": "helps"
+  },
+  {
+    "from": "lupin",
+    "to": "strawberry",
+    "type": "helps"
+  },
+  {
+    "from": "lupin",
+    "to": "summer-savory",
+    "type": "helped_by"
+  },
+  {
+    "from": "marigold",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "marigold",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "marigold",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "marigold",
+    "to": "rose",
+    "type": "helped_by"
+  },
+  {
+    "from": "marigold",
+    "to": "rose",
+    "type": "helps"
+  },
+  {
+    "from": "marigold",
+    "to": "squash",
+    "type": "helps"
+  },
+  {
+    "from": "marigold",
+    "to": "zucchini",
+    "type": "helps"
+  },
+  {
+    "from": "melon",
+    "to": "summer-savory",
+    "type": "helped_by"
+  },
+  {
+    "from": "mustard",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "mustard",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "mustard",
+    "to": "brussels-sprout",
+    "type": "helps"
+  },
+  {
+    "from": "mustard",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "mustard",
+    "to": "cauliflower",
+    "type": "helps"
+  },
+  {
+    "from": "mustard",
+    "to": "grapes",
+    "type": "helps"
+  },
+  {
+    "from": "mustard",
+    "to": "turnip",
+    "type": "helps"
+  },
+  {
+    "from": "nasturtium",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "nasturtium",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "nasturtium",
+    "to": "cauliflower",
+    "type": "avoid"
+  },
+  {
+    "from": "nasturtium",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "nasturtium",
+    "to": "squash",
+    "type": "helps"
+  },
+  {
+    "from": "okra",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "okra",
+    "to": "chilli-pepper",
+    "type": "helped_by"
+  },
+  {
+    "from": "okra",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "okra",
+    "to": "lettuce",
+    "type": "helped_by"
+  },
+  {
+    "from": "okra",
+    "to": "squash",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "bean",
+    "type": "avoid"
+  },
+  {
+    "from": "onion",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "beet",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "brassica",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "carrot",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "chinese-cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "dill",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "green-onion",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "lentils",
+    "type": "avoid"
+  },
+  {
+    "from": "onion",
+    "to": "lettuce",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "mint",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "pansy",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "pea",
+    "type": "avoid"
+  },
+  {
+    "from": "onion",
+    "to": "strawberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "onion",
+    "to": "strawberry",
+    "type": "helps"
+  },
+  {
+    "from": "onion",
+    "to": "summer-savory",
+    "type": "helped_by"
+  },
+  {
+    "from": "oregano",
+    "to": "basil",
+    "type": "helped_by"
+  },
+  {
+    "from": "oregano",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "oregano",
+    "to": "grapes",
+    "type": "helps"
+  },
+  {
+    "from": "oregano",
+    "to": "pumpkin",
+    "type": "helps"
+  },
+  {
+    "from": "pansy",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "pansy",
+    "to": "rose",
+    "type": "helped_by"
+  },
+  {
+    "from": "pansy",
+    "to": "rose",
+    "type": "helps"
+  },
+  {
+    "from": "parsley",
+    "to": "apple",
+    "type": "helped_by"
+  },
+  {
+    "from": "parsley",
+    "to": "asparagus",
+    "type": "helped_by"
+  },
+  {
+    "from": "parsley",
+    "to": "asparagus",
+    "type": "helps"
+  },
+  {
+    "from": "parsley",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "parsley",
+    "to": "lettuce",
+    "type": "avoid"
+  },
+  {
+    "from": "parsley",
+    "to": "rose",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "beet",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "carrot",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "cowpea",
+    "type": "avoid"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "leek",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "lettuce",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "okra",
+    "type": "avoid"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "sorghum",
+    "type": "avoid"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "spinach",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "strawberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "passion-fruit",
+    "to": "swiss-chard",
+    "type": "helped_by"
+  },
+  {
+    "from": "pea",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "pea",
+    "to": "cauliflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "pea",
+    "to": "cauliflower",
+    "type": "helps"
+  },
+  {
+    "from": "pea",
+    "to": "garlic",
+    "type": "helped_by"
+  },
+  {
+    "from": "pea",
+    "to": "garlic",
+    "type": "helps"
+  },
+  {
+    "from": "pea",
+    "to": "mint",
+    "type": "helped_by"
+  },
+  {
+    "from": "pea",
+    "to": "turnip",
+    "type": "helped_by"
+  },
+  {
+    "from": "pea",
+    "to": "turnip",
+    "type": "helps"
+  },
+  {
+    "from": "peppermint",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "peppermint",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "peppermint",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "potato",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "potato",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "potato",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "potato",
+    "to": "carrot",
+    "type": "avoid"
+  },
+  {
+    "from": "potato",
+    "to": "clover-8ed58693-475e-469b-84e4-547e189dd69e",
+    "type": "helped_by"
+  },
+  {
+    "from": "potato",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "potato",
+    "to": "cucumber",
+    "type": "avoid"
+  },
+  {
+    "from": "potato",
+    "to": "garlic",
+    "type": "helped_by"
+  },
+  {
+    "from": "potato",
+    "to": "horseradish",
+    "type": "helped_by"
+  },
+  {
+    "from": "potato",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "potato",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "potato",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "potato",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "potato",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "potato",
+    "to": "pumpkin",
+    "type": "avoid"
+  },
+  {
+    "from": "potato",
+    "to": "raspberry",
+    "type": "avoid"
+  },
+  {
+    "from": "potato",
+    "to": "squash",
+    "type": "avoid"
+  },
+  {
+    "from": "potato",
+    "to": "sunflower",
+    "type": "avoid"
+  },
+  {
+    "from": "potato",
+    "to": "thyme",
+    "type": "helped_by"
+  },
+  {
+    "from": "pumpkin",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "pumpkin",
+    "to": "buckwheat",
+    "type": "helped_by"
+  },
+  {
+    "from": "pumpkin",
+    "to": "catnip",
+    "type": "helped_by"
+  },
+  {
+    "from": "pumpkin",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "pumpkin",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "pumpkin",
+    "to": "oregano",
+    "type": "helped_by"
+  },
+  {
+    "from": "pumpkin",
+    "to": "tansy",
+    "type": "helped_by"
+  },
+  {
+    "from": "radish",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "radish",
+    "to": "chervil",
+    "type": "helped_by"
+  },
+  {
+    "from": "radish",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "radish",
+    "to": "eggplant",
+    "type": "helps"
+  },
+  {
+    "from": "radish",
+    "to": "grapes",
+    "type": "avoid"
+  },
+  {
+    "from": "radish",
+    "to": "lettuce",
+    "type": "helped_by"
+  },
+  {
+    "from": "radish",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "radish",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "radish",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "radish",
+    "to": "squash",
+    "type": "helps"
+  },
+  {
+    "from": "rose",
+    "to": "chives",
+    "type": "helped_by"
+  },
+  {
+    "from": "rose",
+    "to": "garlic",
+    "type": "helped_by"
+  },
+  {
+    "from": "rose",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "rosemary",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "rosemary",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "rosemary",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "rosemary",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "rosemary",
+    "to": "thyme",
+    "type": "helps"
+  },
+  {
+    "from": "rutabaga",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "rutabaga",
+    "to": "hairy-vetch",
+    "type": "helped_by"
+  },
+  {
+    "from": "rutabaga",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "rutabaga",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "brussels-sprout",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "marjoram",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "rosemary",
+    "type": "helps"
+  },
+  {
+    "from": "sage",
+    "to": "strawberry",
+    "type": "helps"
+  },
+  {
+    "from": "soybean",
+    "to": "corn",
+    "type": "helped_by"
+  },
+  {
+    "from": "soybean",
+    "to": "sunflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "spearmint",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "spearmint",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "spearmint",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "spinach",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "spinach",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "spinach",
+    "to": "cauliflower",
+    "type": "helped_by"
+  },
+  {
+    "from": "spinach",
+    "to": "cauliflower",
+    "type": "helps"
+  },
+  {
+    "from": "spinach",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "spinach",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "spinach",
+    "to": "strawberry",
+    "type": "helped_by"
+  },
+  {
+    "from": "squash",
+    "to": "bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "squash",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "squash",
+    "to": "borage",
+    "type": "helped_by"
+  },
+  {
+    "from": "squash",
+    "to": "buckwheat",
+    "type": "helped_by"
+  },
+  {
+    "from": "squash",
+    "to": "catnip",
+    "type": "helped_by"
+  },
+  {
+    "from": "squash",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "squash",
+    "to": "marigold",
+    "type": "helped_by"
+  },
+  {
+    "from": "squash",
+    "to": "nasturtium",
+    "type": "helped_by"
+  },
+  {
+    "from": "squash",
+    "to": "okra",
+    "type": "helps"
+  },
+  {
+    "from": "squash",
+    "to": "tansy",
+    "type": "helped_by"
+  },
+  {
+    "from": "stinging-nettle",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "stinging-nettle",
+    "to": "marjoram",
+    "type": "helps"
+  },
+  {
+    "from": "stinging-nettle",
+    "to": "mint",
+    "type": "helps"
+  },
+  {
+    "from": "stinging-nettle",
+    "to": "peppermint",
+    "type": "helps"
+  },
+  {
+    "from": "stinging-nettle",
+    "to": "sage",
+    "type": "helps"
+  },
+  {
+    "from": "stinging-nettle",
+    "to": "valerian",
+    "type": "helps"
+  },
+  {
+    "from": "strawberry",
+    "to": "borage",
+    "type": "helped_by"
+  },
+  {
+    "from": "strawberry",
+    "to": "brassica",
+    "type": "avoid"
+  },
+  {
+    "from": "strawberry",
+    "to": "bush-bean",
+    "type": "helped_by"
+  },
+  {
+    "from": "strawberry",
+    "to": "bush-bean",
+    "type": "helps"
+  },
+  {
+    "from": "strawberry",
+    "to": "chilli-pepper",
+    "type": "avoid"
+  },
+  {
+    "from": "strawberry",
+    "to": "eggplant",
+    "type": "avoid"
+  },
+  {
+    "from": "strawberry",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "strawberry",
+    "to": "lupin",
+    "type": "helped_by"
+  },
+  {
+    "from": "strawberry",
+    "to": "melon",
+    "type": "avoid"
+  },
+  {
+    "from": "strawberry",
+    "to": "mint",
+    "type": "avoid"
+  },
+  {
+    "from": "strawberry",
+    "to": "okra",
+    "type": "avoid"
+  },
+  {
+    "from": "strawberry",
+    "to": "onion",
+    "type": "helped_by"
+  },
+  {
+    "from": "strawberry",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "strawberry",
+    "to": "passion-fruit",
+    "type": "helps"
+  },
+  {
+    "from": "strawberry",
+    "to": "rose",
+    "type": "avoid"
+  },
+  {
+    "from": "strawberry",
+    "to": "sage",
+    "type": "helped_by"
+  },
+  {
+    "from": "strawberry",
+    "to": "spinach",
+    "type": "helps"
+  },
+  {
+    "from": "strawberry",
+    "to": "thyme",
+    "type": "helped_by"
+  },
+  {
+    "from": "sunflower",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "sunflower",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "sunflower",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "sunflower",
+    "to": "soybean",
+    "type": "helps"
+  },
+  {
+    "from": "sweet-potato",
+    "to": "okra",
+    "type": "helped_by"
+  },
+  {
+    "from": "sweet-potato",
+    "to": "okra",
+    "type": "helps"
+  },
+  {
+    "from": "tansy",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "tansy",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "tansy",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "tansy",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "tansy",
+    "to": "raspberry",
+    "type": "helps"
+  },
+  {
+    "from": "tansy",
+    "to": "rose",
+    "type": "helps"
+  },
+  {
+    "from": "tansy",
+    "to": "squash",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "asparagus",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "bean",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "beet",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "brussels-sprout",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "carrot",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "cauliflower",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "celery",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "chard",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "chilli-pepper",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "corn",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "cucumber",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "eggplant",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "kohlrabi",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "leek",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "lettuce",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "mustard",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "okra",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "onion",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "parsnip",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "pumpkin",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "rutabaga",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "soybean",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "spinach",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "squash",
+    "type": "helps"
+  },
+  {
+    "from": "tarragon",
+    "to": "turnip",
+    "type": "helps"
+  },
+  {
+    "from": "thyme",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "thyme",
+    "to": "brussels-sprout",
+    "type": "helps"
+  },
+  {
+    "from": "thyme",
+    "to": "cabbage",
+    "type": "helps"
+  },
+  {
+    "from": "thyme",
+    "to": "eggplant",
+    "type": "helps"
+  },
+  {
+    "from": "thyme",
+    "to": "strawberry",
+    "type": "helps"
+  },
+  {
+    "from": "turnip",
+    "to": "broccoli",
+    "type": "helps"
+  },
+  {
+    "from": "turnip",
+    "to": "hairy-vetch",
+    "type": "helped_by"
+  },
+  {
+    "from": "turnip",
+    "to": "pea",
+    "type": "helped_by"
+  },
+  {
+    "from": "turnip",
+    "to": "pea",
+    "type": "helps"
+  },
+  {
+    "from": "wormwood",
+    "to": "brassica",
+    "type": "helps"
+  },
+  {
+    "from": "wormwood",
+    "to": "carrot",
+    "type": "helps"
+  }
+]

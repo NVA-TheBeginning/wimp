@@ -6,6 +6,7 @@ on:
   pull_request:
   workflow_dispatch:
 
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -35,15 +36,11 @@ jobs:
     - name: Install dependencies
       run: bun ci
 
-    - name: Generate companions
-      run: bun --bun run generate:companions
-
     - name: Build
       run: bun --bun run build
 
     - name: Run tests
       run: bun --bun run test
-
 
   lint:
     name: Code quality
