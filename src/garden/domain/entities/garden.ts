@@ -1,4 +1,5 @@
 import type { Crop } from "@/crops/domain/aggregates/crop";
+import { GardenCreated } from "@/garden/domain/events/gardenCreated";
 import { GardenPlanted } from "@/garden/domain/events/gardenPlanted";
 import type { GardenSize } from "@/garden/domain/value-objects/gardenSize";
 import { AggregateRoot } from "@/shared/domain/aggregateRoot";
@@ -15,7 +16,22 @@ export class Garden extends AggregateRoot {
   }
 
   static create(size: GardenSize): Garden {
-    return new Garden(size);
+    const garden = new Garden(size);
+    garden.addDomainEvent(new GardenCreated(size.getValue()));
+    return garden;
+  }
+
+  static reconstitute(size: GardenSize, existingField: Crop[]): Garden {
+    const garden = new Garden(size);
+    garden.restoreField(existingField);
+    return garden;
+  }
+
+  private restoreField(crops: Crop[]): void {
+    for (const crop of crops) {
+      this.crops.add(crop);
+      this.field.push(crop);
+    }
   }
 
   addCrop(crop: Crop): void {

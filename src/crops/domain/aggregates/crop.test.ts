@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { Crop } from "@/crops/domain/aggregates/crop";
 import { CompanionAssociated } from "@/crops/domain/events/companionAssociated";
+import { CropCreated } from "@/crops/domain/events/cropCreated";
 import { CannotAssociateCropToItself, ForbiddenCompanionAssociation } from "@/crops/domain/exceptions/errors";
 import { CropName } from "@/crops/domain/value-objects/cropName";
 import { HarvestPeriod } from "@/crops/domain/value-objects/harvestPeriod";
@@ -102,11 +103,22 @@ describe("Crop", () => {
   });
 
   describe("domain events", () => {
+    test("emits CropCreated event on creation", () => {
+      const registry = new MockCompanionRegistry();
+      const tomato = Crop.create(CropName.create("tomato"), HarvestPeriod.create(60, 120, 180), registry);
+
+      const events = tomato.pullDomainEvents();
+      expect(events).toHaveLength(1);
+      expect(events[0]).toBeInstanceOf(CropCreated);
+      expect((events[0] as CropCreated).cropName).toBe("tomato");
+    });
+
     test("emits CompanionAssociated event when associating a companion", () => {
       const registry = new MockCompanionRegistry();
       const tomato = Crop.create(CropName.create("tomato"), HarvestPeriod.create(60, 120, 180), registry);
       const basil = Crop.create(CropName.create("basil"), HarvestPeriod.create(50, 80, 100), registry);
 
+      tomato.pullDomainEvents(); // clear CropCreated
       tomato.associateCompanion(basil);
 
       const events = tomato.pullDomainEvents();
@@ -119,15 +131,30 @@ describe("Crop", () => {
     test("pullDomainEvents clears events after retrieval", () => {
       const registry = new MockCompanionRegistry();
       const tomato = Crop.create(CropName.create("tomato"), HarvestPeriod.create(60, 120, 180), registry);
-      const basil = Crop.create(CropName.create("basil"), HarvestPeriod.create(50, 80, 100), registry);
-
-      tomato.associateCompanion(basil);
 
       const firstPull = tomato.pullDomainEvents();
       expect(firstPull).toHaveLength(1);
 
       const secondPull = tomato.pullDomainEvents();
       expect(secondPull).toHaveLength(0);
+    });
+  });
+
+  describe("reconstitute", () => {
+    test("restores companions without emitting events", () => {
+      const registry = new MockCompanionRegistry();
+      const companions = [CropName.create("basil"), CropName.create("carrot")];
+
+      const tomato = Crop.reconstitute(
+        CropName.create("tomato"),
+        HarvestPeriod.create(60, 120, 180),
+        registry,
+        companions,
+      );
+
+      expect(tomato.getName().getValue()).toBe("tomato");
+      expect(tomato.getCompanions()).toHaveLength(2);
+      expect(tomato.pullDomainEvents()).toHaveLength(0);
     });
   });
 

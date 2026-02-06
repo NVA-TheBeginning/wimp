@@ -1,4 +1,5 @@
 import { CompanionAssociated } from "@/crops/domain/events/companionAssociated";
+import { CropCreated } from "@/crops/domain/events/cropCreated";
 import type { CompanionRegistry } from "@/crops/domain/services/companionRegistry";
 import { CompanionAssociationSpecification } from "@/crops/domain/specifications/companionAssociationSpecification";
 import type { CropName } from "@/crops/domain/value-objects/cropName";
@@ -20,7 +21,26 @@ export class Crop extends AggregateRoot {
   }
 
   static create(name: CropName, harvestPeriod: HarvestPeriod, companionRegistry: CompanionRegistry): Crop {
-    return new Crop(name, harvestPeriod, companionRegistry);
+    const crop = new Crop(name, harvestPeriod, companionRegistry);
+    crop.addDomainEvent(new CropCreated(name.getValue()));
+    return crop;
+  }
+
+  static reconstitute(
+    name: CropName,
+    harvestPeriod: HarvestPeriod,
+    companionRegistry: CompanionRegistry,
+    knownCompanions: CropName[],
+  ): Crop {
+    const crop = new Crop(name, harvestPeriod, companionRegistry);
+    crop.restoreCompanions(knownCompanions);
+    return crop;
+  }
+
+  private restoreCompanions(companions: CropName[]): void {
+    for (const companion of companions) {
+      this.companions.add(companion);
+    }
   }
 
   associateCompanion(companion: Crop): void {

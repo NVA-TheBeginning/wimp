@@ -1,6 +1,4 @@
-import { Crop } from "@/crops/domain/aggregates/crop";
-import { CropName } from "@/crops/domain/value-objects/cropName";
-import { HarvestPeriod } from "@/crops/domain/value-objects/harvestPeriod";
+import { createCropFromGrowstuff } from "@/crops/infrastructure/cropFactory";
 import { CsvCompanionRegistry } from "@/crops/infrastructure/csvLoader";
 import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
 import { Garden } from "@/garden/domain/entities/garden";
@@ -21,15 +19,9 @@ export function plantGarden(
   const garden = Garden.create(size);
   const registry = CsvCompanionRegistry.create();
 
-  const cropEntities: Crop[] = rawCrops
+  const cropEntities = rawCrops
     .filter((c) => selectedSlugs.has(c.slug))
-    .map((c) =>
-      Crop.create(
-        CropName.create(c.name),
-        HarvestPeriod.create(c.medianDaysToFirstHarvest ?? 0, c.medianDaysToLastHarvest ?? 0, c.medianLifespan ?? 0),
-        registry,
-      ),
-    );
+    .map((c) => createCropFromGrowstuff(c, registry));
 
   const totalSlots = garden.getDimension() * garden.getDimension();
   const strategy = new GreedyPlantingStrategy();
