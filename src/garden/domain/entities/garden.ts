@@ -1,13 +1,13 @@
-import type { GardenSize } from "@/crops/infrastructure/schemas/schemas";
+import type { GardenArea } from "@/garden/domain/value-objects/gardenArea";
 
 export class Garden {
-  size: GardenSize;
+  area: GardenArea;
 
-  private constructor(size: GardenSize) {
-    this.size = size;
+  private constructor(area: GardenArea) {
+    this.area = area;
   }
 
-  static create(size: GardenSize): Garden {
-    return new Garden(size);
+  static create(area: GardenArea): Garden {
+    return new Garden(area);
   }
 }

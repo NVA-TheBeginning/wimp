@@ -132,6 +132,24 @@ def main() -> int:
     aliases_path = Path(args.aliases) if args.aliases else None
     report_path = Path(args.report) if args.report else None
 
+    if not crops_path.exists():
+        default_crops = parser.get_default("crops")
+        if args.crops == default_crops:
+            fallback_paths = [
+                Path("src/crops/infrastructure/data/crops-cache.json"),
+                Path("data/crops-cache.json"),
+            ]
+            for fallback in fallback_paths:
+                if fallback.exists():
+                    crops_path = fallback
+                    break
+
+    if not crops_path.exists():
+        raise FileNotFoundError(
+            f"Could not find crops cache at '{args.crops}'. "
+            "Use --crops <path> or generate it first."
+        )
+
     crops = json.loads(crops_path.read_text(encoding="utf-8"))
     slugs = {c["slug"] for c in crops}
     name_to_slug = {c["name"].strip().lower(): c["slug"] for c in crops}
@@ -192,6 +210,7 @@ def main() -> int:
     print(f"unmatched rows: {len(unmatched)}")
     print(f"unique edges: {len(edge_list)}")
     print(f"output: {out_path.as_posix()}")
+    print(f"crops cache: {crops_path.as_posix()}")
     if report_path:
         print(f"unmatched report: {report_path.as_posix()}")
 
