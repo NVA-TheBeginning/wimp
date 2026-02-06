@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { Crop } from "@/crops/domain/aggregates/crop";
 import type { Garden } from "@/garden/domain/entities/garden";
 import type { PlantingLayoutResult } from "@/planting-intelligence/domain/services/plantingLayoutResult";
+import { themeColors } from "@/ui/theme";
 import { capitalize } from "@/ui/utils/capitalize";
 
 interface GardenScreenProps {
@@ -14,13 +15,15 @@ interface GardenScreenProps {
   onQuit: () => void;
 }
 
-function buildCropNumberMap(crops: Crop[]): Map<string, number> {
-  const seen = new Map<string, number>();
-  let counter = 1;
+const CROP_EMOJIS = ["🌱", "🌿", "🥕", "🌾", "🌽", "🥬", "🍅", "🥒", "🫑", "🧅", "🧄", "🥔"];
+
+function buildCropEmojiMap(crops: Crop[]): Map<string, string> {
+  const seen = new Map<string, string>();
+  let counter = 0;
   for (const crop of crops) {
     const name = crop.getName().getValue();
     if (!seen.has(name)) {
-      seen.set(name, counter);
+      seen.set(name, CROP_EMOJIS[counter % CROP_EMOJIS.length] ?? "🌱");
       counter += 1;
     }
   }
@@ -40,26 +43,32 @@ function buildCropCountMap(crops: Crop[]): Map<string, number> {
 
 interface GardenCellProps {
   crop: Crop | undefined;
-  cropNumber: number;
+  cropEmoji: string;
   isSelected: boolean;
   row: number;
   col: number;
 }
 
-function GardenCell({ crop, cropNumber, isSelected, row, col }: GardenCellProps) {
+function GardenCell({ crop, cropEmoji, isSelected, row, col }: GardenCellProps) {
   if (crop) {
-    const label = ` ${String(cropNumber).padStart(2, " ")} `;
-    const attr = isSelected ? TextAttributes.INVERSE : TextAttributes.BOLD;
     return (
-      <text key={`${row}-${col}`} attributes={attr}>
-        {label}
+      <text
+        key={`${row}-${col}`}
+        fg={isSelected ? themeColors.primary : undefined}
+        bg={isSelected ? themeColors.bgLight : undefined}
+      >
+        {` ${cropEmoji} `}
       </text>
     );
   }
 
-  const attr = isSelected ? TextAttributes.INVERSE : TextAttributes.DIM;
   return (
-    <text key={`${row}-${col}`} attributes={attr}>
+    <text
+      key={`${row}-${col}`}
+      fg={isSelected ? themeColors.bgDark : themeColors.textDim}
+      bg={isSelected ? themeColors.textSecondary : themeColors.bgLight}
+      attributes={TextAttributes.DIM}
+    >
       {" .  "}
     </text>
   );
@@ -67,12 +76,12 @@ function GardenCell({ crop, cropNumber, isSelected, row, col }: GardenCellProps)
 
 interface GardenGridProps {
   garden: Garden;
-  cropNumberMap: Map<string, number>;
+  cropEmojiMap: Map<string, string>;
   cursorRow: number;
   cursorCol: number;
 }
 
-function GardenGrid({ garden, cropNumberMap, cursorRow, cursorCol }: GardenGridProps) {
+function GardenGrid({ garden, cropEmojiMap, cursorRow, cursorCol }: GardenGridProps) {
   const dimension = garden.getDimension();
 
   const rows: React.ReactNode[] = [];
@@ -80,12 +89,12 @@ function GardenGrid({ garden, cropNumberMap, cursorRow, cursorCol }: GardenGridP
     const cells: React.ReactNode[] = [];
     for (let col = 0; col < dimension; col += 1) {
       const crop = garden.getCropAt(row, col);
-      const cropNumber = crop ? (cropNumberMap.get(crop.getName().getValue()) ?? 0) : 0;
+      const cropEmoji = crop ? (cropEmojiMap.get(crop.getName().getValue()) ?? "🌱") : "";
       cells.push(
         <GardenCell
           key={`cell-${row}-${col}`}
           crop={crop}
-          cropNumber={cropNumber}
+          cropEmoji={cropEmoji}
           isSelected={row === cursorRow && col === cursorCol}
           row={row}
           col={col}
@@ -103,10 +112,12 @@ function GardenGrid({ garden, cropNumberMap, cursorRow, cursorCol }: GardenGridP
     <box
       border
       borderStyle="rounded"
+      borderColor={themeColors.borderHighlight}
       title={` Garden (${dimension}x${dimension}) `}
       titleAlignment="center"
       flexDirection="column"
       padding={1}
+      backgroundColor={themeColors.bgMedium}
     >
       {rows}
     </box>
@@ -114,16 +125,31 @@ function GardenGrid({ garden, cropNumberMap, cursorRow, cursorCol }: GardenGridP
 }
 
 interface GardenLegendProps {
-  cropNumberMap: Map<string, number>;
+  cropEmojiMap: Map<string, string>;
   cropCountMap: Map<string, number>;
 }
 
-function GardenLegend({ cropNumberMap, cropCountMap }: GardenLegendProps) {
+function GardenLegend({ cropEmojiMap, cropCountMap }: GardenLegendProps) {
   return (
-    <box border borderStyle="rounded" title=" Legend " titleAlignment="center" flexDirection="column" padding={1}>
-      {Array.from(cropNumberMap.entries()).map(([name, num]) => {
+    <box
+      border
+      borderStyle="rounded"
+      borderColor={themeColors.borderHighlight}
+      title=" Legend "
+      titleAlignment="center"
+      flexDirection="column"
+      padding={1}
+      backgroundColor={themeColors.bgMedium}
+    >
+      {Array.from(cropEmojiMap.entries()).map(([name, emoji]) => {
         const count = cropCountMap.get(name) ?? 0;
-        return <text key={name}>{`${String(num).padStart(2, " ")}  ${capitalize(name)} x${count}`}</text>;
+        return (
+          <text key={name} fg={themeColors.primary}>
+            <span fg={themeColors.primaryLight}>{emoji}</span>{" "}
+            <span fg={themeColors.textPrimary}>{capitalize(name)}</span>{" "}
+            <span fg={themeColors.textSecondary}>x{count}</span>
+          </text>
+        );
       })}
     </box>
   );
@@ -134,22 +160,60 @@ interface GardenInfoProps {
   typesCount: number;
   plantedCount: number;
   totalSlots: number;
+  cursorCrop: Crop | undefined;
+  cropEmojiMap: Map<string, string>;
 }
 
-function GardenInfo({ sizeLabel, typesCount, plantedCount, totalSlots }: GardenInfoProps) {
+function GardenInfo({ sizeLabel, typesCount, plantedCount, totalSlots, cursorCrop, cropEmojiMap }: GardenInfoProps) {
   return (
     <box
       border
       borderStyle="rounded"
+      borderColor={themeColors.borderDefault}
       title=" Info "
       titleAlignment="center"
       flexDirection="column"
       padding={1}
       marginTop={1}
+      backgroundColor={themeColors.bgMedium}
     >
-      <text>{`Size:    ${capitalize(sizeLabel)}`}</text>
-      <text>{`Types:   ${typesCount}`}</text>
-      <text>{`Planted: ${plantedCount}/${totalSlots}`}</text>
+      <text fg={themeColors.textPrimary}>
+        <span fg={themeColors.textSecondary}>Size:</span> {capitalize(sizeLabel)}
+      </text>
+      <text fg={themeColors.textPrimary}>
+        <span fg={themeColors.textSecondary}>Types:</span> {typesCount}
+      </text>
+      <text fg={themeColors.textPrimary}>
+        <span fg={themeColors.textSecondary}>Planted:</span>{" "}
+        <span fg={themeColors.primary}>
+          {plantedCount}/{totalSlots}
+        </span>
+      </text>
+
+      {cursorCrop && (
+        <>
+          <box marginTop={1} marginBottom={1} height={1} backgroundColor={themeColors.borderDim} />
+          <text fg={themeColors.primaryLight}>
+            {cropEmojiMap.get(cursorCrop.getName().getValue())} {capitalize(cursorCrop.getName().getValue())}
+          </text>
+
+          {cursorCrop.getCompanions().length > 0 && (
+            <>
+              <text fg={themeColors.textSecondary} marginTop={1}>
+                Buffs:
+              </text>
+              {cursorCrop.getCompanions().map((companionName) => {
+                const emoji = cropEmojiMap.get(companionName.getValue()) ?? "🌱";
+                return (
+                  <text key={companionName.getValue()} fg={themeColors.primary}>
+                    {emoji} {capitalize(companionName.getValue())}
+                  </text>
+                );
+              })}
+            </>
+          )}
+        </>
+      )}
     </box>
   );
 }
@@ -165,15 +229,17 @@ function UnplacedCrops({ crops }: UnplacedCropsProps) {
     <box
       border
       borderStyle="rounded"
+      borderColor={themeColors.textWarning}
       title=" Unplaced "
       titleAlignment="center"
       flexDirection="column"
       padding={1}
       marginTop={1}
+      backgroundColor={themeColors.bgMedium}
     >
       {crops.map((crop) => (
-        <text key={crop.getName().getValue()} attributes={TextAttributes.DIM}>
-          {`x ${capitalize(crop.getName().getValue())}`}
+        <text key={crop.getName().getValue()} fg={themeColors.textWarning}>
+          <span fg={themeColors.textWarning}>⚠</span> {capitalize(crop.getName().getValue())}
         </text>
       ))}
     </box>
@@ -190,7 +256,7 @@ export function GardenScreen({ garden, layoutResult, onBack, onQuit }: GardenScr
 
   const cropsInOrder = layoutResult.getCropsInOrder();
   const unplacedCrops = layoutResult.getUnplacedCrops();
-  const cropNumberMap = buildCropNumberMap(cropsInOrder);
+  const cropEmojiMap = buildCropEmojiMap(cropsInOrder);
   const cropCountMap = buildCropCountMap(cropsInOrder);
 
   useKeyboard((key) => {
@@ -206,36 +272,70 @@ export function GardenScreen({ garden, layoutResult, onBack, onQuit }: GardenScr
   const cursorCropName = cursorCrop ? capitalize(cursorCrop.getName().getValue()) : null;
 
   return (
-    <box flexDirection="column" flexGrow={1}>
+    <box flexDirection="column" flexGrow={1} backgroundColor={themeColors.bgDark}>
       <box justifyContent="center" paddingTop={1}>
-        <ascii-font font="tiny" text="WIMP" />
+        <ascii-font font="tiny" text="WIMP" color={themeColors.primary} />
       </box>
 
       <box flexDirection="row" flexGrow={1} justifyContent="center" alignItems="center">
         <box flexDirection="column" alignItems="center">
-          <GardenGrid garden={garden} cropNumberMap={cropNumberMap} cursorRow={cursorRow} cursorCol={cursorCol} />
+          <GardenGrid garden={garden} cropEmojiMap={cropEmojiMap} cursorRow={cursorRow} cursorCol={cursorCol} />
 
           <box marginTop={1} flexDirection="row" justifyContent="center">
-            <text attributes={TextAttributes.DIM}>
-              {`Position: (${cursorRow + 1}, ${cursorCol + 1})${cursorCropName ? ` - ${cursorCropName}` : ""}`}
-            </text>
+            <box
+              border
+              borderStyle="rounded"
+              borderColor={themeColors.borderDim}
+              padding={1}
+              paddingLeft={2}
+              paddingRight={2}
+              backgroundColor={themeColors.bgLight}
+            >
+              <text fg={themeColors.textSecondary}>
+                Position:{" "}
+                <span fg={themeColors.primary}>
+                  ({cursorRow + 1}, {cursorCol + 1})
+                </span>
+                {cursorCropName && (
+                  <>
+                    {" · "}
+                    <span fg={themeColors.primaryLight}>{cursorCropName}</span>
+                  </>
+                )}
+              </text>
+            </box>
           </box>
         </box>
 
         <box flexDirection="column" width={26} marginLeft={3}>
-          <GardenLegend cropNumberMap={cropNumberMap} cropCountMap={cropCountMap} />
+          <GardenLegend cropEmojiMap={cropEmojiMap} cropCountMap={cropCountMap} />
           <UnplacedCrops crops={unplacedCrops} />
           <GardenInfo
             sizeLabel={sizeLabel}
-            typesCount={cropNumberMap.size}
+            typesCount={cropEmojiMap.size}
             plantedCount={cropsInOrder.length}
             totalSlots={dimension * dimension}
+            cursorCrop={cursorCrop}
+            cropEmojiMap={cropEmojiMap}
           />
         </box>
       </box>
 
       <box justifyContent="center" paddingBottom={1}>
-        <text attributes={TextAttributes.DIM}>{"arrows Move · b Back · q Quit"}</text>
+        <box
+          border
+          borderStyle="rounded"
+          borderColor={themeColors.borderDim}
+          padding={1}
+          paddingLeft={2}
+          paddingRight={2}
+          backgroundColor={themeColors.bgLight}
+        >
+          <text fg={themeColors.textDim}>
+            <span fg={themeColors.textSecondary}>Arrows</span> Move · <span fg={themeColors.textSecondary}>b</span> Back
+            · <span fg={themeColors.textSecondary}>q</span> Quit
+          </text>
+        </box>
       </box>
     </box>
   );
