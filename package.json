@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "bun run --watch src/index.tsx",
     "build": "bun build --compile --minify --sourcemap ./src/index.tsx --outfile tui",
-    "generate:companions": "python scripts/generate-companions.py --keep-helped-by",
-    "test:algo1": "bun run scripts/test-algo1.ts",
+    "generate:companions": "python3 scripts/generate-companions.py --keep-helped-by",
     "lint": "biome check --write --unsafe",
     "test": "bun test"
   },
