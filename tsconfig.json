@@ -26,7 +26,7 @@
     "baseUrl": ".",
     "paths": {
       "@crops/*": ["src/crops/*"],
-      "@garden/*": ["src/garden/*"],
+      "@planting-intelligence/*": ["src/planting-intelligence/*"],
       "@ui/*": ["src/ui/*"],
       "@/*": ["src/*"]
     }

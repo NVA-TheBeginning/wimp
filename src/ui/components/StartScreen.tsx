@@ -2,13 +2,33 @@ import { type SelectOption, TextAttributes } from "@opentui/core";
 import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 import { loadCrops } from "@/crops/infrastructure/apiData";
+import { JsonCompanionKnowledge } from "@/crops/infrastructure/jsonCompanionKnowledge";
 import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
-import { Garden } from "@/garden/domain/entities/garden";
-import type { GardenSize } from "@/garden/domain/value-objects/gardenSize";
+import {
+  type GenerateGardenPlanOutput,
+  GenerateGardenPlanUseCase,
+} from "@/planting-intelligence/application/use-cases/generateGardenPlan";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 import { GardenScreen } from "@/ui/components/GardenScreen";
-import { GardenSizeScreen } from "@/ui/components/GardenSizeScreen";
 
-type Step = "crops" | "size" | "garden";
+let planner: GenerateGardenPlanUseCase | null = null;
+let companionKnowledge: CompanionKnowledgePort | null = null;
+
+function getCompanionKnowledge(): CompanionKnowledgePort {
+  if (!companionKnowledge) {
+    companionKnowledge = new JsonCompanionKnowledge();
+  }
+  return companionKnowledge;
+}
+
+function getPlanner(): GenerateGardenPlanUseCase {
+  if (!planner) {
+    planner = new GenerateGardenPlanUseCase(getCompanionKnowledge());
+  }
+  return planner;
+}
+
+type FocusZone = "list" | "search" | "area";
 
 function capitalize(s: string) {
   if (s.length === 0) return s;
@@ -19,10 +39,12 @@ function capitalize(s: string) {
 export function StartScreen() {
   const [crops, setCrops] = useState<GrowstuffCrop[]>([]);
   const [selectedCrops, setSelectedCrops] = useState<Set<string>>(new Set());
+  const [confirmed, setConfirmed] = useState(false);
+  const [plan, setPlan] = useState<GenerateGardenPlanOutput | null>(null);
+  const [planError, setPlanError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [focusSearch, setFocusSearch] = useState(false);
-  const [step, setStep] = useState<Step>("crops");
-  const [garden, setGarden] = useState<Garden | null>(null);
+  const [areaM2, setAreaM2] = useState("9");
+  const [focusZone, setFocusZone] = useState<FocusZone>("list");
 
   useEffect(() => {
     loadCrops().then((c) => setCrops(c));
@@ -47,43 +69,56 @@ export function StartScreen() {
     });
   };
 
-  useKeyboard((key) => {
-    if (step !== "crops") return;
+  const restartPlan = () => {
+    setConfirmed(false);
+    setPlan(null);
+    setPlanError(null);
+    setFocusZone("list");
+  };
 
-    if (key.name === "escape" && focusSearch) {
-      setFocusSearch(false);
+  useKeyboard((key) => {
+    if (confirmed) {
       return;
     }
-    if (key.name === "tab" && !focusSearch) {
-      setFocusSearch(true);
+
+    if (key.name === "escape" && focusZone !== "list") {
+      setFocusZone("list");
       return;
     }
-    if (key.name === "c" && !focusSearch && selectedCrops.size > 0) {
-      setStep("size");
+    if (key.name === "tab") {
+      setFocusZone((prev) => {
+        if (prev === "list") return "search";
+        if (prev === "search") return "area";
+        return "list";
+      });
+      return;
+    }
+    if (key.name === "c" && focusZone === "list" && selectedCrops.size > 0) {
+      try {
+        const computed = getPlanner().execute({
+          selectedPlantIds: Array.from(selectedCrops),
+          areaM2: Number(areaM2.replace(",", ".")),
+        });
+        setPlan(computed);
+        setPlanError(null);
+        setConfirmed(true);
+      } catch (error) {
+        setPlanError(error instanceof Error ? error.message : "Failed to generate garden plan");
+        setConfirmed(false);
+      }
     }
   });
 
-  const handleSizeConfirm = (size: GardenSize) => {
-    const newGarden = Garden.create(size);
-    setGarden(newGarden);
-    setStep("garden");
-  };
-
-  const handleSizeBack = () => {
-    setStep("crops");
-  };
-
-  const handleQuit = () => {
-    process.exit(0);
-  };
-
-  if (step === "garden" && garden) {
-    const cropNames = crops.filter((c) => selectedCrops.has(c.slug)).map((c) => c.name);
-    return <GardenScreen garden={garden} cropNames={cropNames} onQuit={handleQuit} />;
-  }
-
-  if (step === "size") {
-    return <GardenSizeScreen onConfirm={handleSizeConfirm} onBack={handleSizeBack} />;
+  if (confirmed && selectedCrops.size > 0 && plan) {
+    const bySlug = new Map(crops.map((crop) => [crop.slug, crop.name]));
+    return (
+      <GardenScreen
+        plan={plan}
+        cropNamesBySlug={bySlug}
+        companionKnowledge={getCompanionKnowledge()}
+        onRestart={restartPlan}
+      />
+    );
   }
 
   if (crops.length === 0) {
@@ -104,20 +139,32 @@ export function StartScreen() {
       <text>What would you like to plant?</text>
       <text>{""}</text>
       <box border borderStyle="rounded" title="Search" titleAlignment="center" width={40}>
-        <input value={query} onChange={setQuery} placeholder="Type to filter..." focused={focusSearch} width={38} />
+        <input
+          value={query}
+          onChange={setQuery}
+          placeholder="Type to filter..."
+          focused={focusZone === "search"}
+          width={38}
+        />
+      </box>
+      <box border borderStyle="rounded" title="Garden area (m2)" titleAlignment="center" width={40} marginTop={1}>
+        <input value={areaM2} onChange={setAreaM2} placeholder="Example: 9" focused={focusZone === "area"} width={38} />
       </box>
       <box flexDirection="column" alignItems="center" marginTop={1}>
         <select
           options={options}
           onSelect={handleToggle}
-          focused={!focusSearch}
+          focused={focusZone === "list"}
           height={selectHeight}
           width={40}
           showScrollIndicator={true}
         />
       </box>
+      {planError ? <text attributes={TextAttributes.DIM}>{`Error: ${planError}`}</text> : null}
       <text>{""}</text>
-      <text attributes={TextAttributes.DIM}>{"Tab Search · Esc List · ↑/↓ Navigate · Enter Toggle · c Confirm"}</text>
+      <text attributes={TextAttributes.DIM}>
+        {"Tab cycle focus · Esc list · ↑/↓ navigate · Enter toggle · c compute plan"}
+      </text>
     </box>
   );
 }
