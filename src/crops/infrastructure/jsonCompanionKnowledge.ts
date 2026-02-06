@@ -1,4 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
+import { Crop } from "@/crops/domain/aggregates/crop";
+import type { CompanionRegistry } from "@/crops/domain/services/companionRegistry";
+import { CropName } from "@/crops/domain/value-objects/cropName";
+import { HarvestPeriod } from "@/crops/domain/value-objects/harvestPeriod";
 import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
 import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
@@ -10,10 +14,13 @@ interface RawCompanionEdge {
   type: EdgeType;
 }
 
-export class JsonCompanionKnowledge implements CompanionKnowledgePort {
+export class JsonCompanionKnowledge implements CompanionKnowledgePort, CompanionRegistry {
+  private static readonly DEFAULT_HARVEST_PERIOD = HarvestPeriod.create(0, 0, 0);
+
   private readonly helpsFrom = new Map<string, Set<string>>();
   private readonly helpsTo = new Map<string, Set<string>>();
   private readonly avoidPairs = new Set<string>();
+  private readonly cropCache = new Map<string, Crop>();
 
   constructor(path = "data/companions.json") {
     const resolvedPath = this.resolvePath(path);
@@ -38,13 +45,11 @@ export class JsonCompanionKnowledge implements CompanionKnowledgePort {
   }
 
   isForbiddenPair(first: PlantId, second: PlantId): boolean {
-    const a = first.getValue();
-    const b = second.getValue();
-    return this.avoidPairs.has(this.key(a, b)) || this.avoidPairs.has(this.key(b, a));
+    return !this.canAssociate(first, second);
   }
 
   getCompatibilityScore(first: PlantId, second: PlantId): number {
-    if (this.isForbiddenPair(first, second)) {
+    if (!this.canAssociate(first, second)) {
       return -100;
     }
 
@@ -60,6 +65,42 @@ export class JsonCompanionKnowledge implements CompanionKnowledgePort {
     }
 
     return score;
+  }
+
+  isHelpful(crop: CropName, companion: CropName): boolean {
+    const source = crop.getValue();
+    const destination = companion.getValue();
+    return this.helpsFrom.get(source)?.has(destination) ?? false;
+  }
+
+  isForbidden(crop: CropName, companion: CropName): boolean {
+    const source = crop.getValue();
+    const destination = companion.getValue();
+    return this.avoidPairs.has(this.key(source, destination)) || this.avoidPairs.has(this.key(destination, source));
+  }
+
+  getHelpfulCompanions(crop: CropName): CropName[] {
+    const source = crop.getValue();
+    const companions = this.helpsFrom.get(source) ?? new Set<string>();
+    return Array.from(companions).map((companion) => CropName.create(companion));
+  }
+
+  getForbiddenCompanions(crop: CropName): CropName[] {
+    const source = crop.getValue();
+    const companions = new Set<string>();
+
+    for (const pair of this.avoidPairs) {
+      const [from, to] = pair.split(">>");
+      if (!(from && to)) continue;
+
+      if (from === source) {
+        companions.add(to);
+      } else if (to === source) {
+        companions.add(from);
+      }
+    }
+
+    return Array.from(companions).map((companion) => CropName.create(companion));
   }
 
   private resolvePath(path: string): string {
@@ -105,6 +146,27 @@ export class JsonCompanionKnowledge implements CompanionKnowledgePort {
 
     this.helpsFrom.get(from)?.add(to);
     this.helpsTo.get(to)?.add(from);
+  }
+
+  private canAssociate(first: PlantId, second: PlantId): boolean {
+    // A plant can coexist with the same species in the layout; self-association rule is for companion relation modeling.
+    if (first.equals(second)) {
+      return true;
+    }
+
+    return this.toCrop(first).canAssociateWith(this.toCrop(second));
+  }
+
+  private toCrop(plantId: PlantId): Crop {
+    const key = plantId.getValue();
+    const cached = this.cropCache.get(key);
+    if (cached) {
+      return cached;
+    }
+
+    const crop = Crop.create(CropName.create(key), JsonCompanionKnowledge.DEFAULT_HARVEST_PERIOD, this);
+    this.cropCache.set(key, crop);
+    return crop;
   }
 
   private safeCreatePlantId(raw: string): PlantId | null {
