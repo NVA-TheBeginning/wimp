@@ -1,4 +1,4 @@
-import { JsonCompanionKnowledge } from "@/garden/infrastructure/jsonCompanionKnowledge";
+import { JsonCompanionKnowledge } from "@/crops/infrastructure/jsonCompanionKnowledge";
 import { GenerateCompanionListUseCase } from "@/planting-intelligence/application/use-cases/generateCompanionList";
 
 interface CliOptions {
