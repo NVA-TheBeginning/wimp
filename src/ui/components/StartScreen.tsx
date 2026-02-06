@@ -3,11 +3,11 @@ import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 import { loadCrops } from "@/crops/infrastructure/apiData";
 import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
+import { JsonCompanionKnowledge } from "@/garden/infrastructure/jsonCompanionKnowledge";
 import {
   type GenerateGardenPlanOutput,
   GenerateGardenPlanUseCase,
-} from "@/garden/application/use-cases/generateGardenPlan";
-import { JsonCompanionKnowledge } from "@/garden/infrastructure/jsonCompanionKnowledge";
+} from "@/planting-intelligence/application/use-cases/generateGardenPlan";
 
 let planner: GenerateGardenPlanUseCase | null = null;
 

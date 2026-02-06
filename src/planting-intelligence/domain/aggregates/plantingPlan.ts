@@ -1,5 +1,5 @@
-import type { GardenArea } from "@/garden/domain/value-objects/gardenArea";
-import type { PlantId } from "@/garden/domain/value-objects/plantId";
+import type { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import type { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
 
 export type PlantAllocationSource = "selected" | "companion";
 

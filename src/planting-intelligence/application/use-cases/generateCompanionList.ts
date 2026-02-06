@@ -1,7 +1,7 @@
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import { CompanionListOptimizer } from "@/garden/domain/services/companionListOptimizer";
-import { GardenArea } from "@/garden/domain/value-objects/gardenArea";
-import { PlantId } from "@/garden/domain/value-objects/plantId";
+import { CompanionListOptimizer } from "@/planting-intelligence/domain/services/companionListOptimizer";
+import { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
 export interface GenerateCompanionListInput {
   selectedPlantIds: string[];
@@ -22,7 +22,7 @@ export interface GenerateCompanionListOutput {
 export class GenerateCompanionListUseCase {
   private readonly optimizer: CompanionListOptimizer;
 
-  constructor(knowledge: CompanionKnowledge) {
+  constructor(knowledge: CompanionKnowledgePort) {
     this.optimizer = new CompanionListOptimizer(knowledge);
   }
 

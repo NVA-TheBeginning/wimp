@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import { PlantId } from "@/garden/domain/value-objects/plantId";
+import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
 type EdgeType = "helps" | "avoid" | "helped_by";
 
@@ -10,7 +10,7 @@ interface RawCompanionEdge {
   type: EdgeType;
 }
 
-export class JsonCompanionKnowledge implements CompanionKnowledge {
+export class JsonCompanionKnowledge implements CompanionKnowledgePort {
   private readonly helpsFrom = new Map<string, Set<string>>();
   private readonly helpsTo = new Map<string, Set<string>>();
   private readonly avoidPairs = new Set<string>();

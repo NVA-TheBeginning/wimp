@@ -1,4 +1,4 @@
-import { InvalidPlantId } from "@/garden/domain/errors/errors";
+import { InvalidPlantId } from "@/planting-intelligence/domain/errors/errors";
 
 const PLANT_ID_REGEX = /^[a-z0-9][a-z0-9-_]*$/;
 

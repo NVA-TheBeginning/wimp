@@ -1,4 +1,4 @@
-import type { GardenArea } from "@/garden/domain/value-objects/gardenArea";
+import type { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
 
 export class Garden {
   area: GardenArea;

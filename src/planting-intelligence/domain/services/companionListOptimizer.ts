@@ -1,12 +1,12 @@
-import type { PlantAllocation, PlantAllocationSource } from "@/garden/domain/aggregates/plantingPlan";
+import type { PlantAllocation, PlantAllocationSource } from "@/planting-intelligence/domain/aggregates/plantingPlan";
 import {
   GardenCapacityExceeded,
   IncompatibleSelectedPlants,
   InvalidPlantSelection,
-} from "@/garden/domain/errors/errors";
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import type { GardenArea } from "@/garden/domain/value-objects/gardenArea";
-import type { PlantId } from "@/garden/domain/value-objects/plantId";
+} from "@/planting-intelligence/domain/errors/errors";
+import type { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import type { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
 interface CandidateScore {
   plantId: PlantId;
@@ -21,9 +21,9 @@ interface WorkingAllocation {
 }
 
 export class CompanionListOptimizer {
-  private readonly knowledge: CompanionKnowledge;
+  private readonly knowledge: CompanionKnowledgePort;
 
-  constructor(knowledge: CompanionKnowledge) {
+  constructor(knowledge: CompanionKnowledgePort) {
     this.knowledge = knowledge;
   }
 

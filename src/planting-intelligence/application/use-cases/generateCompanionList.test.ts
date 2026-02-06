@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { GenerateGardenPlanUseCase } from "@/garden/application/use-cases/generateGardenPlan";
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import { PlantId } from "@/garden/domain/value-objects/plantId";
+import { GenerateCompanionListUseCase } from "@/planting-intelligence/application/use-cases/generateCompanionList";
+import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
-class InMemoryCompanionKnowledge implements CompanionKnowledge {
+class InMemoryCompanionKnowledge implements CompanionKnowledgePort {
   private readonly helps = new Set<string>();
   private readonly avoids = new Set<string>();
 
@@ -22,7 +22,6 @@ class InMemoryCompanionKnowledge implements CompanionKnowledge {
     for (const relation of this.helps) {
       const [from, to] = relation.split(">>");
       if (!(from && to)) continue;
-
       if (from === id) candidates.add(to);
       if (to === id) candidates.add(from);
     }
@@ -38,7 +37,6 @@ class InMemoryCompanionKnowledge implements CompanionKnowledge {
 
   getCompatibilityScore(first: PlantId, second: PlantId): number {
     if (this.isForbiddenPair(first, second)) return -100;
-
     const a = first.getValue();
     const b = second.getValue();
     let score = 0;
@@ -48,27 +46,20 @@ class InMemoryCompanionKnowledge implements CompanionKnowledge {
   }
 }
 
-describe("GenerateGardenPlanUseCase", () => {
-  test("returns a planting list and positions for the square garden", () => {
+describe("GenerateCompanionListUseCase", () => {
+  test("supports a single selected plant", () => {
     const knowledge = new InMemoryCompanionKnowledge();
     knowledge.addHelp("tomato", "basil");
     knowledge.addHelp("basil", "tomato");
-    knowledge.addHelp("carrot", "tomato");
-    knowledge.addAvoid("tomato", "potato");
 
-    const useCase = new GenerateGardenPlanUseCase(knowledge);
+    const useCase = new GenerateCompanionListUseCase(knowledge);
     const output = useCase.execute({
-      selectedPlantIds: ["tomato", "carrot"],
+      selectedPlantIds: ["tomato"],
       areaM2: 4,
     });
 
-    expect(output.areaM2).toBe(4);
-    expect(output.sideLengthMeters).toBe(2);
+    expect(output.capacity).toBe(4);
     expect(output.allocations.some((allocation) => allocation.plantId === "tomato")).toBe(true);
-    expect(output.allocations.some((allocation) => allocation.plantId === "carrot")).toBe(true);
-    expect(output.positions).toHaveLength(4);
-
-    const totalQuantity = output.allocations.reduce((sum, allocation) => sum + allocation.quantity, 0);
-    expect(totalQuantity).toBe(4);
+    expect(output.allocations.reduce((sum, allocation) => sum + allocation.quantity, 0)).toBe(4);
   });
 });

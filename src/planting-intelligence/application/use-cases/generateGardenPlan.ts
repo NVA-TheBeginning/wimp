@@ -1,9 +1,9 @@
-import { PlantingPlan } from "@/garden/domain/aggregates/plantingPlan";
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import { CompanionListOptimizer } from "@/garden/domain/services/companionListOptimizer";
-import { LayoutPlanner } from "@/garden/domain/services/layoutPlanner";
-import { GardenArea } from "@/garden/domain/value-objects/gardenArea";
-import { PlantId } from "@/garden/domain/value-objects/plantId";
+import { PlantingPlan } from "@/planting-intelligence/domain/aggregates/plantingPlan";
+import { CompanionListOptimizer } from "@/planting-intelligence/domain/services/companionListOptimizer";
+import { LayoutPlanner } from "@/planting-intelligence/domain/services/layoutPlanner";
+import { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
 export interface GenerateGardenPlanInput {
   selectedPlantIds: string[];
@@ -33,7 +33,7 @@ export class GenerateGardenPlanUseCase {
   private readonly optimizer: CompanionListOptimizer;
   private readonly layoutPlanner: LayoutPlanner;
 
-  constructor(knowledge: CompanionKnowledge) {
+  constructor(knowledge: CompanionKnowledgePort) {
     this.optimizer = new CompanionListOptimizer(knowledge);
     this.layoutPlanner = new LayoutPlanner(knowledge);
   }

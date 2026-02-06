@@ -1,5 +1,5 @@
-import { GenerateCompanionListUseCase } from "@/garden/application/use-cases/generateCompanionList";
 import { JsonCompanionKnowledge } from "@/garden/infrastructure/jsonCompanionKnowledge";
+import { GenerateCompanionListUseCase } from "@/planting-intelligence/application/use-cases/generateCompanionList";
 
 interface CliOptions {
   plants: string[];

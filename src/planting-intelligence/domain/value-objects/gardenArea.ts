@@ -1,4 +1,4 @@
-import { InvalidGardenArea } from "@/garden/domain/errors/errors";
+import { InvalidGardenArea } from "@/planting-intelligence/domain/errors/errors";
 
 export class GardenArea {
   private readonly areaM2: number;

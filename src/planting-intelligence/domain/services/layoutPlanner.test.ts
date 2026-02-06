@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import type { PlantAllocation } from "@/garden/domain/aggregates/plantingPlan";
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import { LayoutPlanner } from "@/garden/domain/services/layoutPlanner";
-import { GardenArea } from "@/garden/domain/value-objects/gardenArea";
-import { PlantId } from "@/garden/domain/value-objects/plantId";
+import type { PlantAllocation } from "@/planting-intelligence/domain/aggregates/plantingPlan";
+import { LayoutPlanner } from "@/planting-intelligence/domain/services/layoutPlanner";
+import { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
-class InMemoryCompanionKnowledge implements CompanionKnowledge {
+class InMemoryCompanionKnowledge implements CompanionKnowledgePort {
   private readonly helps = new Set<string>();
   private readonly avoids = new Set<string>();
 

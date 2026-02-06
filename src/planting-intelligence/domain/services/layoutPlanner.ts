@@ -1,7 +1,7 @@
-import type { PlantAllocation, PositionedPlant } from "@/garden/domain/aggregates/plantingPlan";
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import type { GardenArea } from "@/garden/domain/value-objects/gardenArea";
-import type { PlantId } from "@/garden/domain/value-objects/plantId";
+import type { PlantAllocation, PositionedPlant } from "@/planting-intelligence/domain/aggregates/plantingPlan";
+import type { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import type { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
 export interface LayoutPlanResult {
   positions: PositionedPlant[];
@@ -10,9 +10,9 @@ export interface LayoutPlanResult {
 }
 
 export class LayoutPlanner {
-  private readonly knowledge: CompanionKnowledge;
+  private readonly knowledge: CompanionKnowledgePort;
 
-  constructor(knowledge: CompanionKnowledge) {
+  constructor(knowledge: CompanionKnowledgePort) {
     this.knowledge = knowledge;
   }
 

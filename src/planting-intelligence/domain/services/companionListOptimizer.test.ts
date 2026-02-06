@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import { IncompatibleSelectedPlants, InvalidPlantSelection } from "@/garden/domain/errors/errors";
-import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
-import { CompanionListOptimizer } from "@/garden/domain/services/companionListOptimizer";
-import { GardenArea } from "@/garden/domain/value-objects/gardenArea";
-import { PlantId } from "@/garden/domain/value-objects/plantId";
+import { IncompatibleSelectedPlants, InvalidPlantSelection } from "@/planting-intelligence/domain/errors/errors";
+import { CompanionListOptimizer } from "@/planting-intelligence/domain/services/companionListOptimizer";
+import { GardenArea } from "@/planting-intelligence/domain/value-objects/gardenArea";
+import { PlantId } from "@/planting-intelligence/domain/value-objects/plantId";
+import type { CompanionKnowledgePort } from "@/planting-intelligence/ports/out/companionKnowledgePort";
 
-class InMemoryCompanionKnowledge implements CompanionKnowledge {
+class InMemoryCompanionKnowledge implements CompanionKnowledgePort {
   private readonly helps = new Set<string>();
   private readonly avoids = new Set<string>();
 
