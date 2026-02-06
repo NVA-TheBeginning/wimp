@@ -42,14 +42,18 @@ export function GardenSizeScreen({ onConfirm, onBack }: GardenSizeScreenProps) {
         <ascii-font font="tiny" text="WIMP" />
         <text attributes={TextAttributes.DIM}>Vegetable Garden Simulator</text>
       </box>
-      <text>{""}</text>
-      <text>Choose your garden size:</text>
-      <text>{""}</text>
+
+      <box marginTop={1}>
+        <text>Choose your garden size:</text>
+      </box>
+
       <box flexDirection="column" alignItems="center" marginTop={1}>
         <select options={options} onSelect={handleSelect} focused={true} height={3} width={30} />
       </box>
-      <text>{""}</text>
-      <text attributes={TextAttributes.DIM}>{"↑/↓ Navigate · Enter Select · Esc Back"}</text>
+
+      <box marginTop={1}>
+        <text attributes={TextAttributes.DIM}>{"↑/↓ Navigate · Enter Select · Esc Back"}</text>
+      </box>
     </box>
   );
 }

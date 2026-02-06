@@ -1,19 +1,17 @@
 import { TextAttributes } from "@opentui/core";
 import { useKeyboard } from "@opentui/react";
+import type React from "react";
 import { useState } from "react";
 import type { Crop } from "@/crops/domain/aggregates/crop";
 import type { Garden } from "@/garden/domain/entities/garden";
 import type { PlantingLayoutResult } from "@/planting-intelligence/domain/services/plantingLayoutResult";
+import { capitalize } from "@/ui/utils/capitalize";
 
 interface GardenScreenProps {
   garden: Garden;
   layoutResult: PlantingLayoutResult;
+  onBack: () => void;
   onQuit: () => void;
-}
-
-function capitalize(s: string): string {
-  if (s.length === 0) return s;
-  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 function buildCropNumberMap(crops: Crop[]): Map<string, number> {
@@ -38,7 +36,153 @@ function buildCropCountMap(crops: Crop[]): Map<string, number> {
   return counts;
 }
 
-export function GardenScreen({ garden, layoutResult, onQuit }: GardenScreenProps) {
+/* ---------- Sub-components ---------- */
+
+interface GardenCellProps {
+  crop: Crop | undefined;
+  cropNumber: number;
+  isSelected: boolean;
+  row: number;
+  col: number;
+}
+
+function GardenCell({ crop, cropNumber, isSelected, row, col }: GardenCellProps) {
+  if (crop) {
+    const label = ` ${String(cropNumber).padStart(2, " ")} `;
+    const attr = isSelected ? TextAttributes.INVERSE : TextAttributes.BOLD;
+    return (
+      <text key={`${row}-${col}`} attributes={attr}>
+        {label}
+      </text>
+    );
+  }
+
+  const attr = isSelected ? TextAttributes.INVERSE : TextAttributes.DIM;
+  return (
+    <text key={`${row}-${col}`} attributes={attr}>
+      {" .  "}
+    </text>
+  );
+}
+
+interface GardenGridProps {
+  garden: Garden;
+  cropNumberMap: Map<string, number>;
+  cursorRow: number;
+  cursorCol: number;
+}
+
+function GardenGrid({ garden, cropNumberMap, cursorRow, cursorCol }: GardenGridProps) {
+  const dimension = garden.getDimension();
+
+  const rows: React.ReactNode[] = [];
+  for (let row = 0; row < dimension; row += 1) {
+    const cells: React.ReactNode[] = [];
+    for (let col = 0; col < dimension; col += 1) {
+      const crop = garden.getCropAt(row, col);
+      const cropNumber = crop ? (cropNumberMap.get(crop.getName().getValue()) ?? 0) : 0;
+      cells.push(
+        <GardenCell
+          key={`cell-${row}-${col}`}
+          crop={crop}
+          cropNumber={cropNumber}
+          isSelected={row === cursorRow && col === cursorCol}
+          row={row}
+          col={col}
+        />,
+      );
+    }
+    rows.push(
+      <box key={`row-${row}`} flexDirection="row">
+        {cells}
+      </box>,
+    );
+  }
+
+  return (
+    <box
+      border
+      borderStyle="rounded"
+      title={` Garden (${dimension}x${dimension}) `}
+      titleAlignment="center"
+      flexDirection="column"
+      padding={1}
+    >
+      {rows}
+    </box>
+  );
+}
+
+interface GardenLegendProps {
+  cropNumberMap: Map<string, number>;
+  cropCountMap: Map<string, number>;
+}
+
+function GardenLegend({ cropNumberMap, cropCountMap }: GardenLegendProps) {
+  return (
+    <box border borderStyle="rounded" title=" Legend " titleAlignment="center" flexDirection="column" padding={1}>
+      {Array.from(cropNumberMap.entries()).map(([name, num]) => {
+        const count = cropCountMap.get(name) ?? 0;
+        return <text key={name}>{`${String(num).padStart(2, " ")}  ${capitalize(name)} x${count}`}</text>;
+      })}
+    </box>
+  );
+}
+
+interface GardenInfoProps {
+  sizeLabel: string;
+  typesCount: number;
+  plantedCount: number;
+  totalSlots: number;
+}
+
+function GardenInfo({ sizeLabel, typesCount, plantedCount, totalSlots }: GardenInfoProps) {
+  return (
+    <box
+      border
+      borderStyle="rounded"
+      title=" Info "
+      titleAlignment="center"
+      flexDirection="column"
+      padding={1}
+      marginTop={1}
+    >
+      <text>{`Size:    ${capitalize(sizeLabel)}`}</text>
+      <text>{`Types:   ${typesCount}`}</text>
+      <text>{`Planted: ${plantedCount}/${totalSlots}`}</text>
+    </box>
+  );
+}
+
+interface UnplacedCropsProps {
+  crops: Crop[];
+}
+
+function UnplacedCrops({ crops }: UnplacedCropsProps) {
+  if (crops.length === 0) return null;
+
+  return (
+    <box
+      border
+      borderStyle="rounded"
+      title=" Unplaced "
+      titleAlignment="center"
+      flexDirection="column"
+      padding={1}
+      marginTop={1}
+    >
+      {crops.map((crop) => (
+        <text key={crop.getName().getValue()} attributes={TextAttributes.DIM}>
+          {`x ${capitalize(crop.getName().getValue())}`}
+        </text>
+      ))}
+    </box>
+  );
+}
+
+/* ---------- Main component ---------- */
+
+export function GardenScreen({ garden, layoutResult, onBack, onQuit }: GardenScreenProps) {
   const dimension = garden.getDimension();
   const sizeLabel = garden.getSize().getValue().toLowerCase();
   const [cursorRow, setCursorRow] = useState(0);
@@ -54,55 +198,9 @@ export function GardenScreen({ garden, layoutResult, onQuit }: GardenScreenProps
     if (key.name === "down") setCursorRow((r) => Math.min(dimension - 1, r + 1));
     if (key.name === "left") setCursorCol((c) => Math.max(0, c - 1));
     if (key.name === "right") setCursorCol((c) => Math.min(dimension - 1, c + 1));
+    if (key.name === "b") onBack();
     if (key.name === "q") onQuit();
   });
-
-  const renderCell = (row: number, col: number) => {
-    const crop = garden.getCropAt(row, col);
-    const isSelected = row === cursorRow && col === cursorCol;
-
-    if (crop) {
-      const num = cropNumberMap.get(crop.getName().getValue()) ?? 0;
-      const label = ` ${String(num).padStart(2, " ")} `;
-
-      if (isSelected) {
-        return (
-          <text key={`${row}-${col}`} attributes={TextAttributes.INVERSE}>
-            {label}
-          </text>
-        );
-      }
-      return (
-        <text key={`${row}-${col}`} attributes={TextAttributes.BOLD}>
-          {label}
-        </text>
-      );
-    }
-
-    if (isSelected) {
-      return (
-        <text key={`${row}-${col}`} attributes={TextAttributes.INVERSE}>
-          {" .  "}
-        </text>
-      );
-    }
-    return (
-      <text key={`${row}-${col}`} attributes={TextAttributes.DIM}>
-        {" .  "}
-      </text>
-    );
-  };
-
-  const renderRow = (row: number) => {
-    const cells = Array.from({ length: dimension }, (_, col) => renderCell(row, col));
-    return (
-      <box key={`row-${row}`} flexDirection="row">
-        {cells}
-      </box>
-    );
-  };
-
-  const rows = Array.from({ length: dimension }, (_, row) => renderRow(row));
 
   const cursorCrop = garden.getCropAt(cursorRow, cursorCol);
   const cursorCropName = cursorCrop ? capitalize(cursorCrop.getName().getValue()) : null;
@@ -115,16 +213,7 @@ export function GardenScreen({ garden, layoutResult, onQuit }: GardenScreenProps
 
       <box flexDirection="row" flexGrow={1} justifyContent="center" alignItems="center">
         <box flexDirection="column" alignItems="center">
-          <box
-            border
-            borderStyle="rounded"
-            title={` Garden (${dimension}x${dimension}) `}
-            titleAlignment="center"
-            flexDirection="column"
-            padding={1}
-          >
-            {rows}
-          </box>
+          <GardenGrid garden={garden} cropNumberMap={cropNumberMap} cursorRow={cursorRow} cursorCol={cursorCol} />
 
           <box marginTop={1} flexDirection="row" justifyContent="center">
             <text attributes={TextAttributes.DIM}>
@@ -134,49 +223,19 @@ export function GardenScreen({ garden, layoutResult, onQuit }: GardenScreenProps
         </box>
 
         <box flexDirection="column" width={26} marginLeft={3}>
-          <box border borderStyle="rounded" title=" Legend " titleAlignment="center" flexDirection="column" padding={1}>
-            {Array.from(cropNumberMap.entries()).map(([name, num]) => {
-              const count = cropCountMap.get(name) ?? 0;
-              return <text key={name}>{`${String(num).padStart(2, " ")}  ${capitalize(name)} x${count}`}</text>;
-            })}
-          </box>
-
-          {unplacedCrops.length > 0 && (
-            <box
-              border
-              borderStyle="rounded"
-              title=" Unplaced "
-              titleAlignment="center"
-              flexDirection="column"
-              padding={1}
-              marginTop={1}
-            >
-              {unplacedCrops.map((crop) => (
-                <text key={crop.getName().getValue()} attributes={TextAttributes.DIM}>
-                  {`x ${capitalize(crop.getName().getValue())}`}
-                </text>
-              ))}
-            </box>
-          )}
-
-          <box
-            border
-            borderStyle="rounded"
-            title=" Info "
-            titleAlignment="center"
-            flexDirection="column"
-            padding={1}
-            marginTop={1}
-          >
-            <text>{`Size:    ${capitalize(sizeLabel)}`}</text>
-            <text>{`Types:   ${cropNumberMap.size}`}</text>
-            <text>{`Planted: ${cropsInOrder.length}/${dimension * dimension}`}</text>
-          </box>
+          <GardenLegend cropNumberMap={cropNumberMap} cropCountMap={cropCountMap} />
+          <UnplacedCrops crops={unplacedCrops} />
+          <GardenInfo
+            sizeLabel={sizeLabel}
+            typesCount={cropNumberMap.size}
+            plantedCount={cropsInOrder.length}
+            totalSlots={dimension * dimension}
+          />
         </box>
       </box>
 
       <box justifyContent="center" paddingBottom={1}>
-        <text attributes={TextAttributes.DIM}>{"arrows Move | q Quit"}</text>
+        <text attributes={TextAttributes.DIM}>{"arrows Move · b Back · q Quit"}</text>
       </box>
     </box>
   );
