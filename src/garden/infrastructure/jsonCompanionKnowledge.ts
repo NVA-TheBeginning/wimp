@@ -15,7 +15,7 @@ export class JsonCompanionKnowledge implements CompanionKnowledge {
   private readonly helpsTo = new Map<string, Set<string>>();
   private readonly avoidPairs = new Set<string>();
 
-  constructor(path: string = "data/companions.json") {
+  constructor(path = "data/companions.json") {
     const resolvedPath = this.resolvePath(path);
     const raw = JSON.parse(readFileSync(resolvedPath, "utf-8")) as RawCompanionEdge[];
 
@@ -78,7 +78,7 @@ export class JsonCompanionKnowledge implements CompanionKnowledge {
   private addEdge(edge: RawCompanionEdge): void {
     const from = this.safeCreatePlantId(edge.from);
     const to = this.safeCreatePlantId(edge.to);
-    if (!from || !to) return;
+    if (!(from && to)) return;
 
     if (edge.type === "helps") {
       this.addHelp(from.getValue(), to.getValue());

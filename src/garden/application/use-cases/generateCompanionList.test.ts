@@ -21,7 +21,7 @@ class InMemoryCompanionKnowledge implements CompanionKnowledge {
 
     for (const relation of this.helps) {
       const [from, to] = relation.split(">>");
-      if (!from || !to) continue;
+      if (!(from && to)) continue;
       if (from === id) candidates.add(to);
       if (to === id) candidates.add(from);
     }

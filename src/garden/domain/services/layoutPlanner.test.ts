@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import type { PlantAllocation } from "@/garden/domain/aggregates/plantingPlan";
-import { LayoutPlanner } from "@/garden/domain/services/layoutPlanner";
 import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
+import { LayoutPlanner } from "@/garden/domain/services/layoutPlanner";
 import { GardenArea } from "@/garden/domain/value-objects/gardenArea";
 import { PlantId } from "@/garden/domain/value-objects/plantId";
 
@@ -56,11 +56,7 @@ describe("LayoutPlanner", () => {
 
     const planner = new LayoutPlanner(knowledge);
     const plan = planner.plan(
-      [
-        allocation("tomato", 2, "selected"),
-        allocation("basil", 2, "companion"),
-        allocation("carrot", 1, "selected"),
-      ],
+      [allocation("tomato", 2, "selected"), allocation("basil", 2, "companion"), allocation("carrot", 1, "selected")],
       GardenArea.create(5),
     );
 

@@ -1,5 +1,5 @@
-import { CompanionListOptimizer } from "@/garden/domain/services/companionListOptimizer";
 import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
+import { CompanionListOptimizer } from "@/garden/domain/services/companionListOptimizer";
 import { GardenArea } from "@/garden/domain/value-objects/gardenArea";
 import { PlantId } from "@/garden/domain/value-objects/plantId";
 

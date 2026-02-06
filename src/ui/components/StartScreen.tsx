@@ -3,7 +3,10 @@ import { useKeyboard } from "@opentui/react";
 import { useEffect, useState } from "react";
 import { loadCrops } from "@/crops/infrastructure/apiData";
 import type { GrowstuffCrop } from "@/crops/infrastructure/schemas/infrastructure";
-import { GenerateGardenPlanUseCase, type GenerateGardenPlanOutput } from "@/garden/application/use-cases/generateGardenPlan";
+import {
+  type GenerateGardenPlanOutput,
+  GenerateGardenPlanUseCase,
+} from "@/garden/application/use-cases/generateGardenPlan";
 import { JsonCompanionKnowledge } from "@/garden/infrastructure/jsonCompanionKnowledge";
 
 let planner: GenerateGardenPlanUseCase | null = null;
@@ -107,7 +110,9 @@ export function StartScreen() {
       codeByPlantId.set(allocation.plantId, formatPlanCode(index));
     }
 
-    const grid: string[][] = Array.from({ length: plan.gridSide }, () => Array.from({ length: plan.gridSide }, () => ".."));
+    const grid: string[][] = Array.from({ length: plan.gridSide }, () =>
+      Array.from({ length: plan.gridSide }, () => ".."),
+    );
     for (const position of plan.positions) {
       const code = codeByPlantId.get(position.plantId) ?? "??";
       const row = grid[position.gridY];
@@ -115,18 +120,23 @@ export function StartScreen() {
       row[position.gridX] = code;
     }
 
-    const mapLines: string[] = [];
+    const mapLines: Array<{ key: string; text: string }> = [];
     const separator = `+${"----+".repeat(plan.gridSide)}`;
-    mapLines.push(separator);
-    for (const row of grid) {
-      mapLines.push(`| ${row.join(" | ")} |`);
-      mapLines.push(separator);
+    mapLines.push({ key: "border-top", text: separator });
+    for (let rowIndex = 0; rowIndex < grid.length; rowIndex += 1) {
+      const row = grid[rowIndex];
+      if (!row) continue;
+      mapLines.push({ key: `row-${rowIndex}`, text: `| ${row.join(" | ")} |` });
+      mapLines.push({ key: `border-${rowIndex}`, text: separator });
     }
 
     const legendLines = plan.allocations.map((allocation) => {
       const name = bySlug.get(allocation.plantId) ?? allocation.plantId;
       const code = codeByPlantId.get(allocation.plantId) ?? "??";
-      return `${code} ${capitalize(name)} x${allocation.quantity} (${allocation.source})`;
+      return {
+        key: `legend-${allocation.plantId}`,
+        text: `${code} ${capitalize(name)} x${allocation.quantity} (${allocation.source})`,
+      };
     });
 
     return (
@@ -140,13 +150,13 @@ export function StartScreen() {
           <text>{`Grid: ${plan.gridSide}x${plan.gridSide} (${plan.cellSizeMeters.toFixed(2)}m per cell)`}</text>
           <text>{""}</text>
           <text>Garden map (top view):</text>
-          {mapLines.map((line, index) => (
-            <text key={`map-${index}`}>{line}</text>
+          {mapLines.map((line) => (
+            <text key={line.key}>{line.text}</text>
           ))}
           <text>{""}</text>
           <text>Legend:</text>
-          {legendLines.map((line, index) => (
-            <text key={`legend-${index}`}>{line}</text>
+          {legendLines.map((line) => (
+            <text key={line.key}>{line.text}</text>
           ))}
           <text>{""}</text>
           <text attributes={TextAttributes.DIM}>Press r to restart</text>
@@ -173,7 +183,13 @@ export function StartScreen() {
       <text>What would you like to plant?</text>
       <text>{""}</text>
       <box border borderStyle="rounded" title="Search" titleAlignment="center" width={40}>
-        <input value={query} onChange={setQuery} placeholder="Type to filter..." focused={focusZone === "search"} width={38} />
+        <input
+          value={query}
+          onChange={setQuery}
+          placeholder="Type to filter..."
+          focused={focusZone === "search"}
+          width={38}
+        />
       </box>
       <box border borderStyle="rounded" title="Garden area (m2)" titleAlignment="center" width={40} marginTop={1}>
         <input value={areaM2} onChange={setAreaM2} placeholder="Example: 9" focused={focusZone === "area"} width={38} />
@@ -190,7 +206,9 @@ export function StartScreen() {
       </box>
       {planError ? <text attributes={TextAttributes.DIM}>{`Error: ${planError}`}</text> : null}
       <text>{""}</text>
-      <text attributes={TextAttributes.DIM}>{"Tab cycle focus · Esc list · ↑/↓ navigate · Enter toggle · c compute plan"}</text>
+      <text attributes={TextAttributes.DIM}>
+        {"Tab cycle focus · Esc list · ↑/↓ navigate · Enter toggle · c compute plan"}
+      </text>
     </box>
   );
 }

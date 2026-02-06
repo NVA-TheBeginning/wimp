@@ -84,7 +84,10 @@ export class LayoutPlanner {
     return neighbors;
   }
 
-  private pickBestPlantForPosition(remaining: Map<string, { plantId: PlantId; quantity: number }>, neighbors: PlantId[]): PlantId {
+  private pickBestPlantForPosition(
+    remaining: Map<string, { plantId: PlantId; quantity: number }>,
+    neighbors: PlantId[],
+  ): PlantId {
     let bestPlant: PlantId | null = null;
     let bestScore = Number.NEGATIVE_INFINITY;
 

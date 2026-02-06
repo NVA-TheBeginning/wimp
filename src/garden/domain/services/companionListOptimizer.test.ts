@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { IncompatibleSelectedPlants, InvalidPlantSelection } from "@/garden/domain/errors/errors";
-import { CompanionListOptimizer } from "@/garden/domain/services/companionListOptimizer";
 import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
+import { CompanionListOptimizer } from "@/garden/domain/services/companionListOptimizer";
 import { GardenArea } from "@/garden/domain/value-objects/gardenArea";
 import { PlantId } from "@/garden/domain/value-objects/plantId";
 
@@ -23,7 +23,7 @@ class InMemoryCompanionKnowledge implements CompanionKnowledge {
 
     for (const relation of this.helps) {
       const [from, to] = relation.split(">>");
-      if (!from || !to) continue;
+      if (!(from && to)) continue;
 
       if (from === id) candidates.add(to);
       if (to === id) candidates.add(from);
@@ -76,7 +76,9 @@ describe("CompanionListOptimizer", () => {
     knowledge.addAvoid("tomato", "potato");
 
     const optimizer = new CompanionListOptimizer(knowledge);
-    expect(() => optimizer.optimize([pid("tomato"), pid("potato")], GardenArea.create(4))).toThrow(IncompatibleSelectedPlants);
+    expect(() => optimizer.optimize([pid("tomato"), pid("potato")], GardenArea.create(4))).toThrow(
+      IncompatibleSelectedPlants,
+    );
   });
 
   test("throws when the user selects no plant", () => {

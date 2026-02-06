@@ -1,5 +1,9 @@
 import type { PlantAllocation, PlantAllocationSource } from "@/garden/domain/aggregates/plantingPlan";
-import { GardenCapacityExceeded, IncompatibleSelectedPlants, InvalidPlantSelection } from "@/garden/domain/errors/errors";
+import {
+  GardenCapacityExceeded,
+  IncompatibleSelectedPlants,
+  InvalidPlantSelection,
+} from "@/garden/domain/errors/errors";
 import type { CompanionKnowledge } from "@/garden/domain/services/companionKnowledge";
 import type { GardenArea } from "@/garden/domain/value-objects/gardenArea";
 import type { PlantId } from "@/garden/domain/value-objects/plantId";
@@ -32,7 +36,9 @@ export class CompanionListOptimizer {
 
     const capacity = area.getPlantCapacity();
     if (selected.length > capacity) {
-      throw new GardenCapacityExceeded(`Garden capacity (${capacity}) is too small for ${selected.length} selected plants`);
+      throw new GardenCapacityExceeded(
+        `Garden capacity (${capacity}) is too small for ${selected.length} selected plants`,
+      );
     }
 
     this.ensureNoForbiddenPairs(selected);
@@ -111,7 +117,10 @@ export class CompanionListOptimizer {
     }
   }
 
-  private rankCompanionCandidates(selected: PlantId[], alreadyIncluded: Map<string, WorkingAllocation>): CandidateScore[] {
+  private rankCompanionCandidates(
+    selected: PlantId[],
+    alreadyIncluded: Map<string, WorkingAllocation>,
+  ): CandidateScore[] {
     const candidates = new Map<string, CandidateScore>();
 
     for (const selectedPlant of selected) {
