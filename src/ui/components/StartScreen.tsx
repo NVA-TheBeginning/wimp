@@ -23,6 +23,10 @@ function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+function formatPlanCode(index: number): string {
+  return String(index + 1).padStart(2, "0");
+}
+
 export function StartScreen() {
   const [crops, setCrops] = useState<GrowstuffCrop[]>([]);
   const [selectedCrops, setSelectedCrops] = useState<Set<string>>(new Set());
@@ -95,13 +99,34 @@ export function StartScreen() {
   if (confirmed && selectedCrops.size > 0 && plan) {
     const bySlug = new Map(crops.map((crop) => [crop.slug, crop.name]));
     const names = crops.filter((c) => selectedCrops.has(c.slug)).map((c) => capitalize(c.name));
-    const planLines = plan.allocations.map((allocation) => {
+
+    const codeByPlantId = new Map<string, string>();
+    for (let index = 0; index < plan.allocations.length; index += 1) {
+      const allocation = plan.allocations[index];
+      if (!allocation) continue;
+      codeByPlantId.set(allocation.plantId, formatPlanCode(index));
+    }
+
+    const grid: string[][] = Array.from({ length: plan.gridSide }, () => Array.from({ length: plan.gridSide }, () => ".."));
+    for (const position of plan.positions) {
+      const code = codeByPlantId.get(position.plantId) ?? "??";
+      const row = grid[position.gridY];
+      if (!row) continue;
+      row[position.gridX] = code;
+    }
+
+    const mapLines: string[] = [];
+    const separator = `+${"----+".repeat(plan.gridSide)}`;
+    mapLines.push(separator);
+    for (const row of grid) {
+      mapLines.push(`| ${row.join(" | ")} |`);
+      mapLines.push(separator);
+    }
+
+    const legendLines = plan.allocations.map((allocation) => {
       const name = bySlug.get(allocation.plantId) ?? allocation.plantId;
-      return `${capitalize(name)} x${allocation.quantity} (${allocation.source})`;
-    });
-    const positionLines = plan.positions.slice(0, 8).map((position, index) => {
-      const name = bySlug.get(position.plantId) ?? position.plantId;
-      return `${index + 1}. ${capitalize(name)} @ (${position.x.toFixed(2)}m, ${position.y.toFixed(2)}m)`;
+      const code = codeByPlantId.get(allocation.plantId) ?? "??";
+      return `${code} ${capitalize(name)} x${allocation.quantity} (${allocation.source})`;
     });
 
     return (
@@ -114,16 +139,15 @@ export function StartScreen() {
           <text>{`Area: ${plan.areaM2} m2 (${plan.sideLengthMeters.toFixed(2)}m x ${plan.sideLengthMeters.toFixed(2)}m)`}</text>
           <text>{`Grid: ${plan.gridSide}x${plan.gridSide} (${plan.cellSizeMeters.toFixed(2)}m per cell)`}</text>
           <text>{""}</text>
-          <text>Recommended list:</text>
-          {planLines.map((line) => (
-            <text key={line}>{line}</text>
+          <text>Garden map (top view):</text>
+          {mapLines.map((line, index) => (
+            <text key={`map-${index}`}>{line}</text>
           ))}
           <text>{""}</text>
-          <text>First positions:</text>
-          {positionLines.map((line) => (
-            <text key={line}>{line}</text>
+          <text>Legend:</text>
+          {legendLines.map((line, index) => (
+            <text key={`legend-${index}`}>{line}</text>
           ))}
-          {plan.positions.length > 8 ? <text>...</text> : null}
           <text>{""}</text>
           <text attributes={TextAttributes.DIM}>Press r to restart</text>
         </box>
